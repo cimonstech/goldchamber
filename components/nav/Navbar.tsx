@@ -85,7 +85,7 @@ export function Navbar() {
                   {aboutOpen && (
                     <div className="absolute top-full left-0 pt-2 w-48">
                       <div className="bg-dark-2 border border-gold/30 rounded py-2 shadow-xl">
-                        {item.children.map((child) => (
+                        {(item.children ?? []).map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}

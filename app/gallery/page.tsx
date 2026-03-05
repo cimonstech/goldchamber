@@ -20,8 +20,7 @@ export default function GalleryPage() {
         title="Media Gallery"
         subtitle="Imagery and media from CLGB events, gold sector, and institutional activities."
       />
-      <div className="pt-10 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pt-10 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {images.map((img) => (
             <div
