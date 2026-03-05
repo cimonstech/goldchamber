@@ -46,6 +46,7 @@ async function fetchApised(
 
 export async function GET() {
   const apiKey =
+    process.env.NEXT_PUBLIC_APISED_SECRET ??
     process.env.APISED_API_KEY ??
     process.env["NEXT_PUBLIC_APISED-SECRET"];
 
