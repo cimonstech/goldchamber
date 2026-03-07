@@ -14,8 +14,6 @@ const navItems = [
     children: [
       { href: "/about", label: "Our Story" },
       { href: "/about/leadership", label: "Leadership" },
-      { href: "/about/core-values", label: "Core Values" },
-      { href: "/about/why-choose-us", label: "Why Choose Us" },
     ],
   },
   { href: "/membership", label: "Membership" },
@@ -160,8 +158,6 @@ export function Navbar() {
                   {[
                     { href: "/about", label: "Our Story" },
                     { href: "/about/leadership", label: "Leadership" },
-                    { href: "/about/core-values", label: "Core Values" },
-                    { href: "/about/why-choose-us", label: "Why Choose Us" },
                   ].map((child) => (
                     <Link
                       key={child.href}

@@ -33,11 +33,17 @@ export function Membership() {
     <section
       ref={ref}
       className={cn(
-        "relative z-10 py-section md:py-section-md sm:py-section-sm transition-all duration-700 ease-out",
+        "relative z-10 overflow-hidden bg-dark py-section md:py-section-md sm:py-section-sm transition-all duration-700 ease-out",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/gold-bars2.jpg')" }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-black/80" aria-hidden />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold block mb-4">
           Membership
         </span>

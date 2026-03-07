@@ -1,84 +1,182 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageHero } from "@/components/PageHero";
+import { articles } from "@/lib/articles";
+import { ContactBanner } from "@/components/sections/ContactBanner";
+import { ArticleShareSidebar } from "@/components/newsroom/ArticleShareSidebar";
+import { MoreArticlesSection } from "@/components/newsroom/MoreArticlesSection";
 
-const articles: Record<
-  string,
-  { title: string; date: string; category: string; body: string; image: string }
-> = {
-  "press-release-oct-2025": {
-    title: "Press Release — 23rd October 2025",
-    date: "23 Oct 2025",
-    category: "Press Release",
-    image: "/gold-bars.jpg",
-    body: "The latest official communication from the Chamber of Licensed Gold Buyers. Full text to be populated from existing site content.",
-  },
-  "goldbod-receipts-enforcement": {
-    title: "GoldBod Begins Reinforcement of GoldBod Receipts",
-    date: "Oct 2025",
-    category: "Regulatory",
-    image: "/gold-bars2.jpg",
-    body: "The Ghana Gold Board has begun enforcing the mandatory use of GoldBod receipts by all licensed gold buyers. CLGB members are advised on compliance requirements. Full article content to be populated.",
-  },
-  "june-21-deadline": {
-    title: "No More Extensions After June 21 Deadline",
-    date: "Jun 2025",
-    category: "Industry News",
-    image: "/goldbars3.jpeg",
-    body: "GoldBod has issued a final warning to unlicensed traders following the June 21 licensing deadline. CLGB outlines what members need to know. Full article content to be populated.",
-  },
-};
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chamberofgoldbuyers.com";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export async function generateStaticParams() {
+  return articles.map((a) => ({ slug: a.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = articles[slug];
-  if (!article) return { title: "News — CLGB" };
+  const article = articles.find((a) => a.slug === slug);
   return {
-    title: `${article.title} — Chamber of Licensed Gold Buyers`,
-    description: article.body.slice(0, 160),
+    title: article ? `${article.title} — CLGB` : "Article — CLGB",
+    description: article?.excerpt,
   };
 }
 
-export default async function NewsArticlePage({ params }: Props) {
+export default async function NewsroomArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = articles[slug];
+  const article = articles.find((a) => a.slug === slug);
   if (!article) notFound();
+
+  const otherArticles = articles.filter((a) => a.slug !== slug);
+  const articleUrl = `${SITE_URL}/newsroom/${article.slug}`;
 
   return (
     <>
-      <PageHero
-        title={article.title}
-        subtitle={`${article.date} · ${article.category}`}
-      />
-      <div className="py-section md:py-section-md">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/newsroom"
-            className="inline-block font-sans text-sm text-gold hover:underline mb-8"
-          >
-            ← Back to News Room
-          </Link>
-          <h1 className="font-display text-h2 text-cream font-light mb-8 sr-only">
-            {article.title}
-          </h1>
-          <div className="relative aspect-video bg-dark-2 mb-10">
-            <Image
-              src={article.image}
-              alt=""
-              fill
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
-          <div className="font-sans text-cream/80 leading-relaxed space-y-4">
-            <p>{article.body}</p>
+      {/* SECTION 1 — ARTICLE HERO */}
+      <section className="relative min-h-[50vh] overflow-hidden flex items-end bg-[#050505]">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={article.image}
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
+          />
+        </div>
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.95) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="relative z-[2] w-full px-[60px] max-md:px-6 pb-[60px]">
+          <div className="max-w-[900px]">
+            <p
+              className="font-sans text-[9px] uppercase tracking-[3px] mb-4"
+              style={{
+                color: "rgba(201,168,76,0.6)",
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              HOME · NEWSROOM · {article.category.toUpperCase()}
+            </p>
+            <span
+              className="inline-block px-4 py-1.5 font-sans text-[8px] uppercase tracking-[2px] font-bold text-[#050505] mb-5"
+              style={{
+                background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              {article.category}
+            </span>
+            <h1
+              className="font-display font-light text-[#FAF6EE] leading-[1.1] mb-6"
+              style={{
+                fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                fontSize: "clamp(36px, 5vw, 72px)",
+                fontWeight: 300,
+              }}
+            >
+              {article.title}
+            </h1>
+            <p
+              className="font-sans text-[10px] uppercase tracking-[3px]"
+              style={{
+                color: "rgba(201,168,76,0.6)",
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              {article.date}
+            </p>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* SECTION 2 — ARTICLE BODY */}
+      <section className="bg-[#050505] py-20 px-[60px] max-md:px-6">
+        <div className="max-w-[1200px] mx-auto flex gap-16">
+          <div className="flex-1 min-w-0 max-w-[800px]">
+            <div className="lg:hidden mb-8">
+              <ArticleShareSidebar url={articleUrl} title={article.title} />
+            </div>
+            <div className="space-y-7">
+              {article.body.map((para, i) => (
+                <p
+                  key={i}
+                  className="font-sans text-[15px] font-light leading-[2]"
+                  style={{
+                    color: "rgba(250,246,238,0.72)",
+                    fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                    ...(i === 0 && {
+                      // First letter drop cap
+                    }),
+                  }}
+                >
+                  {i === 0 ? (
+                    <>
+                      <span
+                        className="float-left text-[4em] font-semibold leading-[0.8] mr-2 mt-1"
+                        style={{
+                          fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                          color: "#C9A84C",
+                        }}
+                      >
+                        {para.charAt(0)}
+                      </span>
+                      {para.slice(1)}
+                    </>
+                  ) : (
+                    para
+                  )}
+                </p>
+              ))}
+            </div>
+
+            <div className="w-full h-px bg-[rgba(201,168,76,0.2)] my-12" />
+
+            <div>
+              <p
+                className="font-sans text-[9px] uppercase tracking-[3px] mb-3"
+                style={{
+                  color: "rgba(201,168,76,0.5)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                PUBLISHED BY
+              </p>
+              <Image
+                src="/primarylogo-white.png"
+                alt="Chamber of Licensed Gold Buyers"
+                width={120}
+                height={40}
+                className="object-contain object-left"
+              />
+              <p
+                className="font-sans text-[12px] mt-2"
+                style={{
+                  color: "rgba(250,246,238,0.5)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                Chamber of Licensed Gold Buyers
+              </p>
+            </div>
+          </div>
+          <div className="hidden lg:block">
+            <ArticleShareSidebar url={articleUrl} title={article.title} />
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 — MORE ARTICLES */}
+      <MoreArticlesSection articles={otherArticles} />
+
+      {/* SECTION 4 — CTA BANNER */}
+      <ContactBanner />
     </>
   );
 }

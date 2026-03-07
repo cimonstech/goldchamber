@@ -1,128 +1,468 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
+import { useRouter } from "next/navigation";
+import { articles } from "@/lib/articles";
+import { ContactBanner } from "@/components/sections/ContactBanner";
 
-export const metadata: Metadata = {
-  title: "News Room",
-  description: "Regulatory updates, industry news, and press releases from the Chamber of Licensed Gold Buyers.",
-  openGraph: {
-    title: "News Room — Chamber of Licensed Gold Buyers",
-    description: "Regulatory updates, industry news, and press releases.",
-  },
-};
+const GoldDust = dynamic(() => import("@/components/GoldDust"), { ssr: false });
 
-const articles = [
-  {
-    slug: "press-release-oct-2025",
-    title: "Press Release — 23rd October 2025",
-    excerpt: "The latest official communication from the Chamber of Licensed Gold Buyers.",
-    date: "23 Oct 2025",
-    category: "Press Release",
-    image: "/gold-bars.jpg",
-    featured: true,
-  },
-  {
-    slug: "goldbod-receipts-enforcement",
-    title: "GoldBod Begins Reinforcement of GoldBod Receipts",
-    excerpt: "The Ghana Gold Board has begun enforcing the mandatory use of GoldBod receipts by all licensed gold buyers. CLGB members are advised on compliance requirements.",
-    date: "Oct 2025",
-    category: "Regulatory",
-    image: "/gold-bars2.jpg",
-    featured: false,
-  },
-  {
-    slug: "june-21-deadline",
-    title: "No More Extensions After June 21 Deadline",
-    excerpt: "GoldBod has issued a final warning to unlicensed traders following the June 21 licensing deadline. CLGB outlines what members need to know.",
-    date: "Jun 2025",
-    category: "Industry News",
-    image: "/goldbars3.jpeg",
-    featured: false,
-  },
-];
+const CATEGORIES = ["All", "Press Release", "Regulatory", "Industry News"];
 
-const categories = ["All", "Regulatory", "Industry News", "Press Releases", "Events"];
+function useFadeUp(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) setVisible(true);
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
+function useFadeUpStagger(count: number, threshold = 0.15, delay = 150) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setVisible(Array(count).fill(false));
+        const timers: ReturnType<typeof setTimeout>[] = [];
+        for (let i = 0; i < count; i++) {
+          timers.push(
+            setTimeout(() => {
+              setVisible((v) => {
+                const next = [...v];
+                next[i] = true;
+                return next;
+              });
+            }, i * delay)
+          );
+        }
+        return () => timers.forEach(clearTimeout);
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [count, threshold, delay]);
+
+  return { ref, visible };
+}
 
 export default function NewsroomPage() {
-  const featured = articles.find((a) => a.featured);
-  const rest = articles.filter((a) => !a.featured);
+  const [heroTitleVisible, setHeroTitleVisible] = useState(false);
+  const [heroSubtitleVisible, setHeroSubtitleVisible] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const router = useRouter();
+
+  const featured = useFadeUp(0.15);
+  const filteredArticles =
+    activeCategory === "All"
+      ? articles
+      : articles.filter((a) => a.category === activeCategory);
+  const articlesGrid = useFadeUpStagger(Math.max(filteredArticles.length, 1), 0.15, 100);
+  const newsletter = useFadeUp(0.15);
+
+  const featuredArticle = articles.find((a) => a.featured);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setHeroTitleVisible(true), 50);
+    const t2 = setTimeout(() => setHeroSubtitleVisible(true), 250);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(newsletterEmail.trim())) {
+      // TODO: Connect to email service
+      setNewsletterSubscribed(true);
+    }
+  };
 
   return (
     <>
-      <PageHero
-        label="News"
-        title="News Room"
-        subtitle="Regulatory developments, industry news, and CLGB press releases."
-      />
-      <div className="py-section md:py-section-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap gap-3 mb-12">
-          {categories.map((c) => (
-            <button
-              key={c}
-              type="button"
-              className="font-sans text-xs uppercase tracking-wider px-4 py-2 border border-gold/40 text-cream/80 hover:border-gold hover:text-gold transition-all duration-200 hover:scale-105 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded-sm cursor-pointer"
-            >
-              {c}
-            </button>
-          ))}
+      {/* SECTION 1 — PAGE HERO */}
+      <section className="relative min-h-[55vh] overflow-hidden flex items-center justify-center bg-[#050505]">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/gold-bars.jpg"
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
+          />
         </div>
-        {featured && (
-          <Link
-            href={`/newsroom/${featured.slug}`}
-            className="block border border-gold/20 overflow-hidden mb-12 group"
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(5,5,5,0.65) 0%, rgba(5,5,5,0.92) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 z-[2] pointer-events-none">
+          <GoldDust particleCount={40} opacity={0.1} />
+        </div>
+        <div className="relative z-10 text-center px-4">
+          <p
+            className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
+            style={{
+              color: "rgba(201,168,76,0.6)",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
           >
-            <div className="aspect-[21/9] relative bg-dark-2">
+            HOME · NEWSROOM
+          </p>
+          <h1
+            className="font-display font-light text-[#FAF6EE] mb-6"
+            style={{
+              fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+              fontSize: "clamp(56px, 8vw, 96px)",
+              fontWeight: 300,
+              opacity: heroTitleVisible ? 1 : 0,
+              transform: heroTitleVisible ? "translateY(0)" : "translateY(30px)",
+              transition: "opacity 900ms ease, transform 900ms ease",
+            }}
+          >
+            News & Insights
+          </h1>
+          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <p
+            className="font-display italic mx-auto max-w-[600px]"
+            style={{
+              fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+              fontSize: "clamp(16px, 1.8vw, 22px)",
+              color: "rgba(201,168,76,0.8)",
+              opacity: heroSubtitleVisible ? 1 : 0,
+              transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
+              transition:
+                "opacity 900ms ease 200ms, transform 900ms ease 200ms",
+            }}
+          >
+            Official communications, regulatory updates, and industry news from
+            CLGB.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 2 — FEATURED ARTICLE */}
+      {featuredArticle && (
+        <section
+          ref={featured.ref}
+          className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
+          style={{
+            opacity: featured.visible ? 1 : 0,
+            transform: featured.visible ? "translateY(0)" : "translateY(40px)",
+          }}
+        >
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 border border-[rgba(201,168,76,0.2)] overflow-hidden">
+            <div className="relative min-h-[400px]">
               <Image
-                src={featured.image}
+                src={featuredArticle.image}
                 alt=""
                 fill
-                sizes="100vw"
-                className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
+              <div
+                className="absolute top-6 left-6 px-4 py-1.5 font-sans text-[8px] uppercase tracking-[2px] font-bold text-[#050505]"
+                style={{
+                  background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                {featuredArticle.category}
+              </div>
+              <div
+                className="absolute top-6 right-6 px-4 py-1.5 font-sans text-[8px] uppercase tracking-[2px] text-[#C9A84C]"
+                style={{
+                  background: "rgba(5,5,5,0.8)",
+                  border: "1px solid rgba(201,168,76,0.4)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                FEATURED
+              </div>
             </div>
-            <div className="p-8 border-t border-gold/20">
-              <p className="font-sans text-xs text-gold uppercase tracking-wider mb-2">
-                {featured.date} · {featured.category}
+            <div className="bg-[#111111] p-12">
+              <p
+                className="font-sans text-[10px] uppercase tracking-[3px] mb-4"
+                style={{
+                  color: "rgba(201,168,76,0.6)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                {featuredArticle.date}
               </p>
-              <h2 className="font-display text-2xl md:text-3xl text-cream font-light group-hover:text-gold-light transition-colors">
-                {featured.title}
+              <h2
+                className="font-display font-light text-[#FAF6EE] leading-[1.2] mb-5"
+                style={{
+                  fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                  fontSize: "clamp(28px, 3vw, 42px)",
+                  fontWeight: 300,
+                }}
+              >
+                {featuredArticle.title}
               </h2>
-              <p className="font-sans text-cream/70 mt-2">{featured.excerpt}</p>
+              <p
+                className="font-sans text-[14px] font-light leading-[1.8] mb-8"
+                style={{
+                  color: "rgba(250,246,238,0.6)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                {featuredArticle.excerpt}
+              </p>
+              <Link
+                href={`/newsroom/${featuredArticle.slug}`}
+                className="inline-block px-7 py-3 font-sans text-[10px] uppercase tracking-[2px] font-bold text-[#050505] rounded-[2px] cursor-pointer transition-all duration-300 hover:opacity-90"
+                style={{
+                  background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                  border: "none",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                Read Full Article →
+              </Link>
             </div>
-          </Link>
-        )}
-        <div className="grid md:grid-cols-3 gap-8">
-          {rest.map((article) => (
-            <Link
-              key={article.slug}
-              href={`/newsroom/${article.slug}`}
-              className="group block border border-gold/20 overflow-hidden hover:border-gold/40 transition-colors"
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 3 — ALL ARTICLES GRID */}
+      <section className="bg-[#050505] py-20 px-[60px] max-md:px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <p
+            className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-6"
+            style={{
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            ALL ARTICLES
+          </p>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                className="font-sans text-[10px] uppercase tracking-[2px] py-2 px-5 border cursor-pointer transition-all duration-200"
+                style={{
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                  ...(activeCategory === cat
+                    ? {
+                        background: "#C9A84C",
+                        color: "#050505",
+                        borderColor: "#C9A84C",
+                        fontWeight: 700,
+                      }
+                    : {
+                        background: "transparent",
+                        color: "rgba(250,246,238,0.5)",
+                        borderColor: "rgba(201,168,76,0.2)",
+                      }),
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div
+            ref={articlesGrid.ref}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[2px] mt-8"
+          >
+            {filteredArticles.map((article, i) => (
+              <div
+                key={article.slug}
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/newsroom/${article.slug}`)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    router.push(`/newsroom/${article.slug}`);
+                  }
+                }}
+                className="group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.3)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
+                style={{
+                  background: "#111111",
+                  border: "1px solid rgba(201,168,76,0.1)",
+                  opacity: articlesGrid.visible[i] ? 1 : 0,
+                  transform: articlesGrid.visible[i]
+                    ? "translateY(0)"
+                    : "translateY(40px)",
+                  transition:
+                    "opacity 700ms ease, transform 700ms ease, all 300ms ease",
+                  transitionDelay: `${i * 100}ms`,
+                }}
+              >
+                <div className="relative h-[200px] overflow-hidden">
+                  <Image
+                    src={article.image}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-[600ms] group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div
+                    className="absolute bottom-4 left-4 px-3 py-1 font-sans text-[8px] uppercase tracking-[2px] text-[#C9A84C]"
+                    style={{
+                      background: "rgba(5,5,5,0.85)",
+                      border: "1px solid rgba(201,168,76,0.3)",
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                    }}
+                  >
+                    {article.category}
+                  </div>
+                </div>
+                <div className="p-7">
+                  <p
+                    className="font-sans text-[10px] uppercase tracking-[2px] mb-2.5"
+                    style={{
+                      color: "rgba(201,168,76,0.5)",
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                    }}
+                  >
+                    {article.date}
+                  </p>
+                  <h3
+                    className="font-display font-medium text-[22px] text-[#FAF6EE] leading-[1.3] mb-3"
+                    style={{
+                      fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                    }}
+                  >
+                    {article.title}
+                  </h3>
+                  <p
+                    className="font-sans text-[13px] font-light leading-[1.7] mb-5"
+                    style={{
+                      color: "rgba(250,246,238,0.55)",
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                    }}
+                  >
+                    {article.excerpt}
+                  </p>
+                  <span
+                    className="font-sans text-[10px] uppercase tracking-[2px] text-[#C9A84C]"
+                    style={{
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                    }}
+                  >
+                    Read More →
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 — NEWSLETTER SIGNUP */}
+      <section
+        ref={newsletter.ref}
+        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)] transition-all duration-700 ease-out"
+        style={{
+          opacity: newsletter.visible ? 1 : 0,
+          transform: newsletter.visible ? "translateY(0)" : "translateY(40px)",
+        }}
+      >
+        <div className="max-w-[600px] mx-auto text-center">
+          <p
+            className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-3"
+            style={{
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            STAY INFORMED
+          </p>
+          <h2
+            className="font-display font-light text-[#FAF6EE] mb-4"
+            style={{
+              fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+              fontSize: "clamp(28px, 3vw, 42px)",
+              fontWeight: 300,
+            }}
+          >
+            Get the Latest from CLGB
+          </h2>
+          <p
+            className="font-sans text-[14px] font-light mb-10"
+            style={{
+              color: "rgba(250,246,238,0.5)",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            Receive regulatory updates, market intelligence, and CLGB news
+            directly in your inbox.
+          </p>
+
+          {newsletterSubscribed ? (
+            <p
+              className="font-sans text-[13px] text-[#C9A84C]"
+              style={{
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
             >
-              <div className="aspect-[16/10] relative bg-dark-2">
-                <Image
-                  src={article.image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                />
-              </div>
-              <div className="p-6 border-t border-gold/20">
-                <p className="font-sans text-xs text-gold uppercase tracking-wider mb-1">
-                  {article.date} · {article.category}
-                </p>
-                <h3 className="font-display text-lg font-semibold text-cream group-hover:text-gold-light transition-colors">
-                  {article.title}
-                </h3>
-                <p className="font-sans text-sm text-cream/70 line-clamp-2 mt-1">{article.excerpt}</p>
-              </div>
-            </Link>
-          ))}
+              Thank you — you are subscribed.
+            </p>
+          ) : (
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex flex-col sm:flex-row gap-0 max-w-[480px] mx-auto"
+            >
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Your email address"
+                required
+                className="flex-1 bg-[rgba(255,255,255,0.03)] border border-[rgba(201,168,76,0.2)] sm:border-r-0 px-5 py-3.5 text-[#FAF6EE] font-sans text-[13px] outline-none focus:border-[#C9A84C] transition-colors"
+                style={{
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              />
+              <button
+                type="submit"
+                className="bg-gradient-to-br from-[#C9A84C] to-[#8B6914] text-[#050505] px-7 py-3.5 font-sans text-[10px] uppercase tracking-[2px] font-bold border-none cursor-pointer whitespace-nowrap sm:rounded-r-[2px] rounded-b-[2px] sm:rounded-b-none"
+                style={{
+                  background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
         </div>
-        </div>
-      </div>
+      </section>
+
+      {/* SECTION 5 — CTA BANNER */}
+      <ContactBanner />
     </>
   );
 }

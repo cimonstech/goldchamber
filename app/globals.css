@@ -39,6 +39,11 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #F5D06A;
   }
+
+  ::selection {
+    background: rgba(201, 168, 76, 0.4);
+    color: #FAF6EE;
+  }
 }
 
 @layer utilities {
@@ -102,6 +107,12 @@
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+@keyframes reticle-spin {
+  to { transform: rotate(360deg); }
+}
+.animate-reticle-spin {
+  animation: reticle-spin 8s linear infinite;
 }
 .animate-gold-glow {
   animation: gold-glow-move 2.5s ease-in-out infinite;
