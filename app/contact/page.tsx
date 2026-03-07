@@ -3,15 +3,19 @@ import { PageHero } from "@/components/PageHero";
 import { ContactForm } from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Chamber of Licensed Gold Buyers",
+  title: "Contact",
   description: "Get in touch with the Chamber of Licensed Gold Buyers. Membership, regulatory support, and business enquiries.",
+  openGraph: {
+    title: "Contact — Chamber of Licensed Gold Buyers",
+    description: "Membership, regulatory support, and business enquiries.",
+  },
 };
 
 export default function ContactPage() {
   return (
     <>
       <PageHero label="Contact" title="Get in Touch" subtitle="Whether you are enquiring about membership, seeking regulatory guidance, or have a business proposition — our team is ready to assist." />
-      <div className="pt-10 pb-20">
+      <div className="py-section md:py-section-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="font-sans text-cream/80 text-base leading-relaxed mb-12 max-w-2xl font-light">
           Complete the form below and a member of our team will respond within 2 working days.

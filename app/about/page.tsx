@@ -3,9 +3,13 @@ import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "About — Chamber of Licensed Gold Buyers",
+  title: "About",
   description:
     "The Chamber of Licensed Gold Buyers — Ghana's premier association for certified gold trading. Built on trust, driven by gold.",
+  openGraph: {
+    title: "About — Chamber of Licensed Gold Buyers",
+    description: "Ghana's premier association for certified gold trading. Built on trust, driven by gold.",
+  },
 };
 
 const aboutLinks = [
@@ -23,7 +27,7 @@ export default function AboutPage() {
         label="About"
         links={aboutLinks}
       />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-section md:py-section-md">
         <div className="grid md:grid-cols-[minmax(280px,380px)_1fr] gap-12 md:gap-16 items-start">
           <div className="relative aspect-[4/3] md:aspect-[3/4] max-h-[320px] md:max-h-none overflow-hidden rounded-sm border border-gold/20">
             <Image

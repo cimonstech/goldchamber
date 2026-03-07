@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "News Room — Chamber of Licensed Gold Buyers",
+  title: "News Room",
   description: "Regulatory updates, industry news, and press releases from the Chamber of Licensed Gold Buyers.",
+  openGraph: {
+    title: "News Room — Chamber of Licensed Gold Buyers",
+    description: "Regulatory updates, industry news, and press releases.",
+  },
 };
 
 const articles = [
@@ -50,7 +55,7 @@ export default function NewsroomPage() {
         title="News Room"
         subtitle="Regulatory developments, industry news, and CLGB press releases."
       />
-      <div className="pt-10 pb-20">
+      <div className="py-section md:py-section-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap gap-3 mb-12">
           {categories.map((c) => (
@@ -69,10 +74,12 @@ export default function NewsroomPage() {
             className="block border border-gold/20 overflow-hidden mb-12 group"
           >
             <div className="aspect-[21/9] relative bg-dark-2">
-              <img
+              <Image
                 src={featured.image}
                 alt=""
-                className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                fill
+                sizes="100vw"
+                className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
               />
             </div>
             <div className="p-8 border-t border-gold/20">
@@ -94,10 +101,12 @@ export default function NewsroomPage() {
               className="group block border border-gold/20 overflow-hidden hover:border-gold/40 transition-colors"
             >
               <div className="aspect-[16/10] relative bg-dark-2">
-                <img
+                <Image
                   src={article.image}
                   alt=""
-                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                 />
               </div>
               <div className="p-6 border-t border-gold/20">

@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Gold Trading & Services — Chamber of Licensed Gold Buyers",
+  title: "Gold Trading & Services",
   description:
     "Ghana's gold sector elevated. Regulatory compliance, GoldBod Aggregator access, pricing intelligence, certification, training, and blockchain traceability.",
+  openGraph: {
+    title: "Gold Trading & Services — Chamber of Licensed Gold Buyers",
+    description: "Regulatory compliance, GoldBod Aggregator access, pricing intelligence, certification.",
+  },
 };
 
 const services = [
@@ -42,7 +46,7 @@ export default function GoldTradingPage() {
         subtitle="Gold is Ghana's most valuable natural resource. The Chamber of Licensed Gold Buyers exists to ensure that every ounce is traded with integrity, transparency, and full regulatory compliance."
         label="Gold Trading"
       />
-      <div className="pt-10 pb-20">
+      <div className="py-section md:py-section-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="font-sans text-cream/80 text-base leading-relaxed mb-16 max-w-2xl font-light">
           The trade of this resource happens transparently, fairly, and in full compliance with national law.

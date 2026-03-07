@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Core Values — Chamber of Licensed Gold Buyers",
+  title: "Core Values",
   description:
     "The core values that guide the Chamber of Licensed Gold Buyers: integrity, transparency, empowerment, sustainability.",
+  openGraph: {
+    title: "Core Values — Chamber of Licensed Gold Buyers",
+    description: "Integrity, transparency, empowerment, sustainability.",
+  },
 };
 
 const aboutLinks = [
@@ -42,7 +46,7 @@ export default function CoreValuesPage() {
         label="About"
         links={aboutLinks}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-section md:py-section-md">
         <div className="grid md:grid-cols-2 gap-12 max-w-4xl">
           {values.map((v) => (
             <div key={v.title} className="border-l-2 border-gold/50 pl-8">

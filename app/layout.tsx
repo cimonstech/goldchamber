@@ -18,10 +18,35 @@ const montserrat = Montserrat({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chamberofgoldbuyers.com";
+
 export const metadata: Metadata = {
-  title: "Where Trust Shines as Bright as Gold — Chamber of Licensed Gold Buyers",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Where Trust Shines as Bright as Gold — Chamber of Licensed Gold Buyers",
+    template: "%s | Chamber of Licensed Gold Buyers",
+  },
   description:
     "The Chamber of Licensed Gold Buyers — Ghana's premier association for certified gold trading professionals. GoldBod certified. Ethical sourcing guaranteed.",
+  keywords: ["gold buyers", "Ghana gold", "GoldBod", "gold trading", "ethical gold", "CLGB"],
+  authors: [{ name: "Chamber of Licensed Gold Buyers" }],
+  openGraph: {
+    type: "website",
+    locale: "en_GH",
+    siteName: "Chamber of Licensed Gold Buyers",
+    title: "Where Trust Shines as Bright as Gold — Chamber of Licensed Gold Buyers",
+    description: "Ghana's premier association for certified gold trading professionals. GoldBod certified. Ethical sourcing guaranteed.",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Chamber of Licensed Gold Buyers" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chamber of Licensed Gold Buyers",
+    description: "Ghana's premier association for certified gold trading professionals.",
+  },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

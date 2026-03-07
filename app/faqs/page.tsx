@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "FAQs — Chamber of Licensed Gold Buyers",
+  title: "FAQs",
   description:
     "Frequently asked questions about CLGB membership, gold trading, ethical sourcing, and regulatory compliance.",
+  openGraph: {
+    title: "FAQs — Chamber of Licensed Gold Buyers",
+    description: "Membership, gold trading, ethical sourcing, and regulatory compliance.",
+  },
 };
 
 const faqs = [
@@ -74,7 +78,7 @@ export default function FAQsPage() {
         title="Frequently Asked Questions"
         subtitle="Gold trading, certification, and ethical sourcing."
       />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-section md:py-section-md">
         <dl className="space-y-10">
           {faqs.map((faq) => (
             <div key={faq.q} className="border-b border-gold/20 pb-8">

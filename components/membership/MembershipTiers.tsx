@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 type Tier = {
@@ -15,7 +16,7 @@ export function MembershipTiers({ tiers }: { tiers: Tier[] }) {
         <div
           key={tier.name}
           className={cn(
-            "border rounded-sm p-8 flex flex-col transition-colors",
+            "border rounded-sm p-6 sm:p-8 flex flex-col transition-colors",
             tier.recommended
               ? "border-gold bg-gold/10 order-first md:order-none shadow-[0_0_0_1px_rgba(201,168,76,0.2)]"
               : "border-gold/25 bg-dark-2/60 hover:border-gold/40"
@@ -35,6 +36,12 @@ export function MembershipTiers({ tiers }: { tiers: Tier[] }) {
               </li>
             ))}
           </ul>
+          <Link
+            href="#membership-form"
+            className="mt-8 font-sans text-xs font-semibold uppercase tracking-[0.2em] px-6 py-3 border-2 border-gold text-gold hover:bg-gold hover:text-dark transition-all duration-300 text-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-dark min-h-[44px] flex items-center justify-center"
+          >
+            Apply for {tier.name.split(" ")[0]}
+          </Link>
         </div>
       ))}
     </div>

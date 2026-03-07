@@ -5,9 +5,13 @@ import { MembershipForm } from "@/components/membership/MembershipForm";
 import { MemberAvatars } from "@/components/membership/MemberAvatars";
 
 export const metadata: Metadata = {
-  title: "Membership — Chamber of Licensed Gold Buyers",
+  title: "Membership",
   description:
     "Join the Chamber of Licensed Gold Buyers. Apply for Associate, Full, or Corporate membership. GoldBod certified, regulatory support, elite networking.",
+  openGraph: {
+    title: "Membership — Chamber of Licensed Gold Buyers",
+    description: "Apply for Associate, Full, or Corporate membership. GoldBod certified, regulatory support.",
+  },
 };
 
 const tiers = [

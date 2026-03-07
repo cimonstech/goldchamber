@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Why Choose Us — Chamber of Licensed Gold Buyers",
+  title: "Why Choose Us",
   description:
     "Why the Chamber of Licensed Gold Buyers is the gold standard for trusted gold trade in Ghana.",
+  openGraph: {
+    title: "Why Choose Us — Chamber of Licensed Gold Buyers",
+    description: "The gold standard for trusted gold trade in Ghana.",
+  },
 };
 
 const aboutLinks = [
@@ -32,7 +36,7 @@ export default function WhyChooseUsPage() {
         label="About"
         links={aboutLinks}
       />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-section md:py-section-md">
         <ul className="space-y-6">
           {benefits.map((item, i) => (
             <li

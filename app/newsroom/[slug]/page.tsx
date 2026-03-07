@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
@@ -53,7 +54,7 @@ export default async function NewsArticlePage({ params }: Props) {
         title={article.title}
         subtitle={`${article.date} · ${article.category}`}
       />
-      <div className="pt-10 pb-20">
+      <div className="py-section md:py-section-md">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/newsroom"
@@ -65,10 +66,12 @@ export default async function NewsArticlePage({ params }: Props) {
             {article.title}
           </h1>
           <div className="relative aspect-video bg-dark-2 mb-10">
-            <img
+            <Image
               src={article.image}
               alt=""
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
             />
           </div>
           <div className="font-sans text-cream/80 leading-relaxed space-y-4">

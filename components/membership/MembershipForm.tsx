@@ -10,9 +10,11 @@ const tierOptions = [
 
 export function MembershipForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   return (
-    <section>
+    <section id="membership-form">
       <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold block mb-4">
         Application
       </span>
@@ -31,9 +33,27 @@ export function MembershipForm() {
       ) : (
         <form
           className="max-w-xl space-y-6"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            setSubmitted(true);
+            setError(null);
+            setLoading(true);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            try {
+              const res = await fetch("/api/membership", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error ?? "Failed to submit");
+              setSubmitted(true);
+            } catch (err) {
+              setError(err instanceof Error ? err.message : "Failed to submit. Please try again.");
+            } finally {
+              setLoading(false);
+            }
           }}
         >
           <div>
@@ -122,11 +142,15 @@ export function MembershipForm() {
               className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none resize-y"
             />
           </div>
+          {error && (
+            <p className="font-sans text-sm text-red-400">{error}</p>
+          )}
           <button
             type="submit"
-            className="font-sans text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 border-2 border-gold text-gold hover:bg-gold hover:text-dark transition-all duration-300 hover:scale-105 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded-sm cursor-pointer"
+            disabled={loading}
+            className="font-sans text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 border-2 border-gold text-gold hover:bg-gold hover:text-dark transition-all duration-300 hover:scale-105 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
-            Submit Application
+            {loading ? "Submitting…" : "Submit Application"}
           </button>
         </form>
       )}

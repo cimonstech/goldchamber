@@ -12,9 +12,13 @@ import {
 } from "@/components/leadership/Icons";
 
 export const metadata: Metadata = {
-  title: "Leadership — Chamber of Licensed Gold Buyers",
+  title: "Leadership",
   description:
     "Meet the leadership team: Job Osei Tutu (Founder), Daniel Boateng Sarpong (Co-Founder), Kwaku Amoah (Acting CEO).",
+  openGraph: {
+    title: "Leadership — Chamber of Licensed Gold Buyers",
+    description: "Meet the leadership team behind Ghana's premier chamber for licensed gold buyers.",
+  },
 };
 
 const aboutLinks = [
@@ -33,7 +37,7 @@ export default function LeadershipPage() {
         label="About"
         links={aboutLinks}
       />
-      <div className="bg-dark pt-4">
+      <div className="bg-dark py-section md:py-section-md">
         {/* Job Osei Tutu — Founder */}
         <LeaderProfile
           name="Job Osei Tutu"
