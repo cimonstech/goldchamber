@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/nav/Navbar";
 import { Footer } from "@/components/nav/Footer";
 import { ParticleBackgroundWrapper } from "@/components/ParticleBackgroundWrapper";
 import { GoldPriceBar } from "@/components/GoldPriceBar";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -55,15 +57,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
-      <body className="min-h-screen bg-dark text-cream">
-        <ParticleBackgroundWrapper />
-        <div className="sticky top-0 z-50">
-          <GoldPriceBar />
-          <Navbar />
-        </div>
-        <main className="relative z-10">{children}</main>
-        <Footer />
+    <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var theme=localStorage.getItem('clgb-theme')||'dark';document.documentElement.setAttribute('data-theme',theme);}catch(e){}})();`,
+          }}
+        />
+        <ThemeProvider>
+          <ParticleBackgroundWrapper />
+          <div className="sticky top-0 z-50">
+            <GoldPriceBar />
+            <Navbar />
+          </div>
+          <main className="relative z-10">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

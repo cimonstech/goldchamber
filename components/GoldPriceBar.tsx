@@ -65,9 +65,9 @@ export function GoldPriceBar() {
 
   if (error && !data) {
     return (
-      <div className="bg-dark-2 border-b border-gold/20 py-2">
+      <div className="border-b py-2" style={{ backgroundColor: "var(--bg-primary)", borderColor: "var(--border-subtle)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="font-sans text-xs text-white/60 uppercase tracking-wider text-center">
+          <p className="font-sans text-xs uppercase tracking-wider text-center" style={{ color: "var(--text-muted)" }}>
             Live gold prices temporarily unavailable
           </p>
         </div>
@@ -77,10 +77,10 @@ export function GoldPriceBar() {
 
   if (!data) {
     return (
-      <div className="bg-dark-2 border-b border-gold/20 py-2">
+      <div className="border-b py-2" style={{ backgroundColor: "var(--bg-primary)", borderColor: "var(--border-subtle)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="font-sans text-xs text-white/60 uppercase tracking-wider text-center animate-pulse">
-            Loading gold prices…
+          <p className="font-sans text-xs uppercase tracking-wider text-center animate-pulse" style={{ color: "var(--text-muted)" }}>
+            Loading…
           </p>
         </div>
       </div>
@@ -91,24 +91,24 @@ export function GoldPriceBar() {
   const up = usd.change >= 0;
 
   return (
-    <div className="bg-dark-2 border-b border-gold/20 py-2.5">
+    <div className="border-b py-2.5" style={{ backgroundColor: "var(--bg-primary)", borderColor: "var(--border-subtle)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 font-sans text-xs">
-          <span className="text-white/70 uppercase tracking-[0.2em]">
+          <span className="uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>
             Gold (per {usd.weight_unit === "gram" ? "gram" : "troy oz"})
           </span>
-          <span className="text-white font-medium">
+          <span className="font-medium" style={{ color: "var(--text-primary)" }}>
             24K: {formatUSD(usd.price_24k)}
           </span>
-          <span className="text-white/85">
+          <span style={{ color: "var(--text-secondary)" }}>
             22K: {formatUSD(usd.price_22k)}
           </span>
-          <span className="text-white/85">
+          <span style={{ color: "var(--text-secondary)" }}>
             21K: {formatUSD(usd.price_21k)}
           </span>
           <span
             className={
-              up ? "text-emerald-400/90" : "text-red-400/90"
+              up ? "text-emerald-600/90" : "text-red-500/90"
             }
           >
             {up ? "↑" : "↓"} {Math.abs(usd.change_percentage).toFixed(2)}%

@@ -23,13 +23,14 @@ export function ContactBanner() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden min-h-[600px] bg-dark border-y border-gold/20 z-10">
+    <section className="cta-banner relative overflow-hidden min-h-[600px] border-y z-10" style={{ borderColor: "var(--border-subtle)" }}>
       {/* Parallax image layer — falls back to dark when image not yet added */}
       <div
         ref={parallaxRef}
-        className="absolute inset-0 w-full top-[-15%] bg-dark"
+        className="absolute inset-0 w-full top-[-15%]"
         style={{
           height: "130%",
+          backgroundColor: "var(--bg-secondary)",
           backgroundImage: "url(/gold-cta.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",

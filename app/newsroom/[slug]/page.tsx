@@ -58,7 +58,7 @@ export default async function NewsroomArticlePage({ params }: Props) {
             <p
               className="font-sans text-[9px] uppercase tracking-[3px] mb-4"
               style={{
-                color: "rgba(201,168,76,0.6)",
+                color: "rgba(255,255,255,0.9)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -86,7 +86,7 @@ export default async function NewsroomArticlePage({ params }: Props) {
             <p
               className="font-sans text-[10px] uppercase tracking-[3px]"
               style={{
-                color: "rgba(201,168,76,0.6)",
+                color: "rgba(255,255,255,0.9)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >

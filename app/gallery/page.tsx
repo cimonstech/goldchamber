@@ -276,7 +276,7 @@ export default function GalleryPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -295,13 +295,13 @@ export default function GalleryPage() {
           >
             Gallery
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[500px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -314,7 +314,7 @@ export default function GalleryPage() {
       </section>
 
       {/* SECTION 2 — GALLERY GRID */}
-      <section className="bg-[#050505] py-20 px-[60px] max-md:px-6">
+      <section className="theme-bg-primary py-20 px-[60px] max-md:px-6">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {CATEGORIES.map((cat) => (
@@ -327,15 +327,15 @@ export default function GalleryPage() {
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                   ...(activeCategory === cat
                     ? {
-                        background: "#C9A84C",
+                        background: "var(--gold-primary)",
                         color: "#050505",
-                        borderColor: "#C9A84C",
+                        borderColor: "var(--gold-primary)",
                         fontWeight: 700,
                       }
                     : {
                         background: "transparent",
-                        color: "rgba(250,246,238,0.5)",
-                        borderColor: "rgba(201,168,76,0.2)",
+                        color: "var(--text-muted)",
+                        borderColor: "var(--input-border)",
                       }),
                 }}
               >
@@ -388,7 +388,7 @@ export default function GalleryPage() {
                   className="absolute top-3 left-3 px-2.5 py-1 font-sans text-[8px] uppercase tracking-[2px] text-[#C9A84C] z-[2]"
                   style={{
                     background: "rgba(5,5,5,0.7)",
-                    border: "1px solid rgba(201,168,76,0.3)",
+                    border: "1px solid var(--border-gold)",
                     fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                   }}
                 >
@@ -400,7 +400,7 @@ export default function GalleryPage() {
                   <p
                     className="font-sans text-[11px] letter-spacing-[1px]"
                     style={{
-                      color: "rgba(250,246,238,0.8)",
+                      color: "rgba(250,246,238,0.9)",
                       fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                     }}
                   >
@@ -510,7 +510,8 @@ export default function GalleryPage() {
       {/* SECTION 3 — SUBMIT YOUR PHOTO */}
       <section
         ref={submitSection.ref}
-        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)] transition-all duration-700 ease-out"
+        className="theme-bg-secondary py-20 px-[60px] max-md:px-6 border-t transition-all duration-700 ease-out"
+        style={{ borderColor: "var(--border-subtle)" }}
         style={{
           opacity: submitSection.visible ? 1 : 0,
           transform: submitSection.visible ? "translateY(0)" : "translateY(40px)",
@@ -531,11 +532,12 @@ export default function GalleryPage() {
             CONTRIBUTE TO THE GALLERY
           </p>
           <h2
-            className="font-display font-light text-[#FAF6EE] mb-4"
+            className="font-display font-light mb-4"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(28px, 3vw, 42px)",
               fontWeight: 300,
+              color: "var(--text-primary)",
             }}
           >
             Are You a CLGB Member?
@@ -543,7 +545,7 @@ export default function GalleryPage() {
           <p
             className="font-sans text-[14px] font-light leading-[1.8] mb-8"
             style={{
-              color: "rgba(250,246,238,0.55)",
+              color: "var(--text-secondary)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -553,7 +555,8 @@ export default function GalleryPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-block border border-[#C9A84C] bg-transparent text-[#C9A84C] py-3 px-8 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300 hover:bg-[#C9A84C] hover:text-[#050505]"
+            className="gold-outline-btn inline-block border bg-transparent py-3 px-8 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300"
+            style={{ borderColor: "var(--gold-primary)", color: "var(--gold-primary)" }}
             style={{
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}

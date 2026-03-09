@@ -4,8 +4,6 @@ const footerLinks = {
   about: [
     { href: "/about", label: "Our Story" },
     { href: "/about/leadership", label: "Leadership" },
-    { href: "/about/core-values", label: "Core Values" },
-    { href: "/about/why-choose-us", label: "Why Choose Us" },
   ],
   main: [
     { href: "/membership", label: "Membership" },
@@ -21,14 +19,14 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="relative z-10 bg-dark-2 border-t border-gold/20">
+    <footer className="footer-section relative z-10 border-t" style={{ borderColor: "var(--border-subtle)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-1">
-            <p className="font-display text-xl font-semibold text-white mb-4">
+            <p className="font-display text-xl font-semibold mb-4" style={{ color: "var(--footer-text)" }}>
               Chamber of Licensed Gold Buyers
             </p>
-            <p className="text-white/70 text-sm font-sans leading-relaxed">
+            <p className="text-sm font-sans leading-relaxed" style={{ color: "var(--footer-text-secondary)" }}>
               Where Trust Shines as Bright as Gold. Ghana&apos;s premier association for certified gold trading professionals.
             </p>
           </div>
@@ -41,7 +39,8 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-cream/70 hover:text-gold text-sm font-sans transition-colors"
+                    className="hover:text-gold text-sm font-sans transition-colors"
+                style={{ color: "var(--footer-text-secondary)" }}
                   >
                     {link.label}
                   </Link>
@@ -58,7 +57,8 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-cream/70 hover:text-gold text-sm font-sans transition-colors"
+                    className="hover:text-gold text-sm font-sans transition-colors"
+                style={{ color: "var(--footer-text-secondary)" }}
                   >
                     {link.label}
                   </Link>
@@ -70,7 +70,7 @@ export function Footer() {
             <h4 className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-4">
               Contact
             </h4>
-            <ul className="space-y-3 text-white/75 text-sm font-sans">
+            <ul className="space-y-3 text-sm font-sans" style={{ color: "var(--footer-text-secondary)" }}>
               <li>Digital Address: AK-009-2554</li>
               <li>
                 <a href="tel:+233266109898" className="hover:text-gold transition-colors">
@@ -85,8 +85,8 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-white/60 text-sm font-sans">
+        <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4" style={{ borderColor: "var(--border-subtle)" }}>
+          <p className="text-sm font-sans" style={{ color: "var(--footer-text-muted)" }}>
             © {new Date().getFullYear()} Chamber of Licensed Gold Buyers. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -94,7 +94,8 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-white/60 hover:text-gold text-sm font-sans transition-colors"
+                className="hover:text-gold text-sm font-sans transition-colors"
+                style={{ color: "var(--footer-text-muted)" }}
               >
                 {link.label}
               </Link>

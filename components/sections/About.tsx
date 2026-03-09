@@ -42,16 +42,16 @@ export function About() {
             <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold block mb-4">
               Who We Are
             </span>
-            <h2 className="font-display text-h1 text-white font-light mb-6">
+            <h2 className="font-display text-h1 font-light mb-6" style={{ color: "var(--text-primary)" }}>
               The Gold Standard of Trusted Trade
             </h2>
-            <p className="font-sans text-white/85 text-base leading-relaxed mb-6 font-light">
+            <p className="font-sans text-base leading-relaxed mb-6 font-light" style={{ color: "var(--text-secondary)" }}>
               The Chamber of Licensed Gold Buyers (CLGB) is Ghana&apos;s foremost association representing
               certified gold trading professionals. We serve as the bridge between miners, buyers, and
               regulatory institutions — ensuring every transaction is transparent, ethical, and fully
               compliant with Ghana&apos;s gold trading laws.
             </p>
-            <p className="font-sans text-white/75 text-base leading-relaxed mb-10 font-light">
+            <p className="font-sans text-base leading-relaxed mb-10 font-light" style={{ color: "var(--text-secondary)" }}>
               By working closely with GoldBod, the Ghana Minerals Commission, and financial
               institutions, we safeguard the integrity of Ghana&apos;s gold sector while creating
               meaningful opportunities for our members — individuals, corporate entities, and
@@ -61,10 +61,11 @@ export function About() {
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="border border-gold/30 bg-dark-2/80 py-4 px-4 text-center"
+                  className="border py-4 px-4 text-center"
+                  style={{ borderColor: "var(--border-gold)", backgroundColor: "var(--bg-primary)" }}
                 >
                   <p className="font-display text-2xl font-semibold text-gold">{stat.value}</p>
-                  <p className="font-sans text-xs uppercase tracking-wider text-white/70 mt-1">
+                  <p className="font-sans text-xs uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>
                     {stat.label}
                   </p>
                 </div>
@@ -80,12 +81,12 @@ export function About() {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 border border-gold/50 bg-dark/90 py-4 px-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 border py-4 px-6" style={{ borderColor: "var(--border-gold-strong)", backgroundColor: "var(--bg-primary)" }}>
                 <p className="font-sans text-xs font-semibold uppercase tracking-wider text-gold">
                   Ghana Minerals Commission Partner
                 </p>
-                <p className="font-display text-lg text-cream mt-1">
+                <p className="font-display text-lg mt-1" style={{ color: "var(--text-primary)" }}>
                   Regulated · Ethical · Transparent
                 </p>
               </div>

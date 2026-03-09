@@ -148,7 +148,7 @@ export default function AboutPage() {
   return (
     <>
       {/* SECTION 1 — PAGE HERO */}
-      <section className="relative min-h-[55vh] bg-[#050505] overflow-hidden flex items-center justify-center">
+      <section className="theme-bg-primary relative min-h-[55vh] overflow-hidden flex items-center justify-center">
         <GoldDust particleCount={60} opacity={0.12} />
         <div className="relative z-10 text-center px-4">
           <p
@@ -158,7 +158,7 @@ export default function AboutPage() {
             HOME · ABOUT
           </p>
           <h1
-            className="font-display font-light text-[#FAF6EE] mb-6"
+            className="font-display font-light theme-text-primary mb-6"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(56px, 8vw, 96px)",
@@ -189,7 +189,7 @@ export default function AboutPage() {
       {/* SECTION 2 — MISSION STATEMENT */}
       <section
         ref={mission.ref}
-        className="py-[100px] px-6 md:px-[60px] bg-[#0a0a0a] transition-all duration-700 ease-out"
+        className="theme-bg-secondary theme-text-primary py-[100px] px-6 md:px-[60px] transition-all duration-700 ease-out"
         style={{
           opacity: mission.visible ? 1 : 0,
           transform: mission.visible ? "translateY(0)" : "translateY(40px)",
@@ -198,10 +198,11 @@ export default function AboutPage() {
         <div className="max-w-[900px] mx-auto text-center">
           <span className="block text-[#C9A84C] text-xs mb-8">◆</span>
           <blockquote
-            className="font-display italic font-light text-[#FAF6EE] leading-[1.6]"
+            className="font-display italic font-light leading-[1.6]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(24px, 3vw, 42px)",
+              color: "var(--text-primary)",
             }}
           >
             The Chamber of Licensed Gold Buyers was established with a singular purpose: to create a
@@ -213,7 +214,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 3 — OUR STORY */}
-      <section ref={storySection.ref} className="py-[120px] px-6 md:px-[60px] bg-[#050505]">
+      <section ref={storySection.ref} className="theme-bg-primary theme-text-primary py-[120px] px-6 md:px-[60px]">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div
             className="transition-all duration-700 ease-out"
@@ -238,7 +239,7 @@ export default function AboutPage() {
             >
               Built on Trust. Driven by Gold.
             </h2>
-            <div className="space-y-5 font-sans text-sm leading-[1.9] font-light" style={{ color: "rgba(250,246,238,0.65)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
+            <div className="space-y-5 font-sans text-sm leading-[1.9] font-light" style={{ color: "var(--text-primary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
               <p>
                 The Chamber of Licensed Gold Buyers was established with a singular purpose: to create a
                 credible, regulated, and transparent ecosystem for gold trading in Ghana. We are not just
@@ -267,8 +268,8 @@ export default function AboutPage() {
             }}
           >
             <div
-              className="absolute border border-[rgba(201,168,76,0.2)] -z-[1] pointer-events-none"
-              style={{ top: -16, right: -16, bottom: 16, left: 16 }}
+              className="absolute border -z-[1] pointer-events-none"
+              style={{ top: -16, right: -16, bottom: 16, left: 16, borderColor: "var(--input-border)" }}
               aria-hidden
             />
             <div className="relative z-[1] aspect-[4/5] w-full overflow-hidden">
@@ -282,7 +283,7 @@ export default function AboutPage() {
             </div>
             <div
               className="absolute -bottom-6 -left-6 z-[2] py-5 px-6"
-              style={{ background: "linear-gradient(135deg, #C9A84C, #8B6914)" }}
+              style={{ background: "var(--gold-gradient)" }}
             >
               <span className="font-display font-bold text-[#050505] block text-[28px]" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>CLGB</span>
               <span className="font-sans text-[9px] uppercase tracking-[2px] text-[#050505]" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>Certified</span>
@@ -292,7 +293,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 4 — LEADERSHIP TEASER */}
-      <section className="py-[120px] px-6 md:px-[60px] bg-[#0a0a0a]">
+      <section className="theme-bg-secondary theme-text-primary py-[120px] px-6 md:px-[60px]">
         <div className="text-center mb-16">
           <p
             className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-3"
@@ -316,9 +317,10 @@ export default function AboutPage() {
             <Link
               key={i}
               href={person.href}
-              className="text-center p-8 rounded-2xl border border-[rgba(201,168,76,0.25)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[rgba(201,168,76,0.5)]"
+              className="theme-card-hover text-center p-8 rounded-2xl border transition-all duration-300 ease-out hover:-translate-y-1.5"
               style={{
-                background: "rgba(201,168,76,0.08)",
+                borderColor: "var(--border-gold)",
+                background: "var(--bg-card)",
                 backdropFilter: "blur(12px)",
                 opacity: leadership.visible[i] ? 1 : 0,
                 transform: leadership.visible[i] ? "translateY(0)" : "translateY(40px)",
@@ -326,12 +328,12 @@ export default function AboutPage() {
                 transitionDelay: `${i * 150}ms`,
               }}
             >
-              <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto mb-4 border-2 border-[rgba(201,168,76,0.4)]">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto mb-4 border-2" style={{ borderColor: "var(--border-gold-strong)" }}>
                 <Image src={person.image} alt="" fill className="object-cover" sizes="64px" />
               </div>
               <p className="font-display font-medium text-[#FAF6EE] text-[22px] mb-1.5" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>{person.name}</p>
               <p className="font-sans text-[9px] uppercase tracking-[3px] mb-5" style={{ color: "rgba(201,168,76,0.7)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>{person.title}</p>
-              <div className="w-full h-px bg-[rgba(201,168,76,0.15)] mb-5" />
+              <div className="w-full h-px mb-5" style={{ backgroundColor: "var(--rule-color)" }} />
               <span className="font-sans text-[10px] uppercase tracking-[2px] text-[#C9A84C]" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>View Profile →</span>
             </Link>
           ))}
@@ -353,7 +355,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 5 — CORE VALUES */}
-      <section className="relative py-[120px] px-6 md:px-[60px] bg-[#050505] overflow-hidden">
+      <section className="theme-bg-primary theme-text-primary relative py-[120px] px-6 md:px-[60px] overflow-hidden">
         <GoldDust particleCount={50} opacity={0.1} />
         <div className="relative z-[1]">
           <div className="text-center mb-16">
@@ -380,9 +382,10 @@ export default function AboutPage() {
               return (
                 <div
                   key={i}
-                  className="p-10 border border-[rgba(201,168,76,0.12)] transition-all duration-300 ease-out hover:bg-[rgba(201,168,76,0.08)] hover:border-[rgba(201,168,76,0.3)] hover:-translate-y-1"
+                  className="theme-card-hover p-10 border transition-all duration-300 ease-out hover:-translate-y-1"
                   style={{
-                    background: "rgba(201,168,76,0.04)",
+                    borderColor: "var(--border-subtle)",
+                    background: "var(--bg-card)",
                     opacity: values.visible[i] ? 1 : 0,
                     transform: values.visible[i] ? "translateY(0)" : "translateY(40px)",
                     transition: "opacity 700ms ease, transform 700ms ease, all 300ms ease",
@@ -391,7 +394,7 @@ export default function AboutPage() {
                 >
                   <Icon size={28} style={{ color: "rgba(201,168,76,0.7)" }} className="mb-5" />
                   <h3 className="font-display font-medium text-[#FAF6EE] text-2xl mb-3" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>{v.title}</h3>
-                  <div className="w-full h-px bg-[rgba(201,168,76,0.15)] mb-3" />
+                  <div className="w-full h-px mb-3" style={{ backgroundColor: "var(--rule-color)" }} />
                   <p className="font-sans text-[13px] font-light leading-[1.8]" style={{ color: "rgba(250,246,238,0.55)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>{v.description}</p>
                 </div>
               );
@@ -401,7 +404,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 6 — WHY CHOOSE US */}
-      <section className="py-[120px] px-6 md:px-[60px] bg-[#0a0a0a]">
+      <section className="theme-bg-secondary py-[120px] px-6 md:px-[60px]">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16">
             <p
@@ -447,8 +450,9 @@ export default function AboutPage() {
       {/* SECTION 7 — ACCREDITATION BAR */}
       <section
         ref={accreditation.ref}
-        className="py-10 px-6 md:px-[60px] bg-[#0a0a0a] border-t border-b border-[rgba(201,168,76,0.12)] flex flex-wrap justify-center gap-12 transition-all duration-700 ease-out"
+        className="theme-bg-secondary py-10 px-6 md:px-[60px] border-t border-b flex flex-wrap justify-center gap-12 transition-all duration-700 ease-out"
         style={{
+          borderColor: "var(--border-subtle)",
           opacity: accreditation.visible ? 1 : 0,
           transform: accreditation.visible ? "translateY(0)" : "translateY(40px)",
         }}

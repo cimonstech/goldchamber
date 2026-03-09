@@ -264,7 +264,7 @@ export default function GoldTradingPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -283,13 +283,13 @@ export default function GoldTradingPage() {
           >
             Gold Trading Services
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[600px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -304,7 +304,7 @@ export default function GoldTradingPage() {
 
       {/* SECTION 2 — LIVE GOLD PRICE STRIP */}
       <section
-        className="bg-[#0a0a0a] py-8 px-[60px] max-md:px-6 border-t border-b border-[rgba(201,168,76,0.12)]"
+        className="theme-bg-secondary theme-text-primary py-8 px-[60px] max-md:px-6 border-t border-b border-[rgba(201,168,76,0.12)]"
       >
         <div className="max-w-[1200px] mx-auto flex flex-wrap justify-between items-center gap-8">
           <div>
@@ -462,7 +462,7 @@ export default function GoldTradingPage() {
       {/* SECTION 3 — INTRO STATEMENT */}
       <section
         ref={intro.ref}
-        className="bg-[#050505] py-[100px] px-[60px] max-md:px-6 transition-all duration-700 ease-out"
+        className="theme-bg-primary theme-text-primary py-[100px] px-[60px] max-md:px-6 transition-all duration-700 ease-out"
         style={{
           opacity: intro.visible ? 1 : 0,
           transform: intro.visible ? "translateY(0)" : "translateY(40px)",
@@ -523,7 +523,7 @@ export default function GoldTradingPage() {
       {/* SECTION 4 — SIX SERVICES */}
       <section
         ref={services.ref}
-        className="bg-[#0a0a0a] py-[120px] px-[60px] max-md:px-6"
+        className="theme-bg-secondary theme-text-primary py-[120px] px-[60px] max-md:px-6"
       >
         <div className="text-center mb-16">
           <p
@@ -609,7 +609,7 @@ export default function GoldTradingPage() {
       {/* SECTION 5 — HOW IT WORKS */}
       <section
         ref={steps.ref}
-        className="bg-[#050505] py-[120px] px-[60px] max-md:px-6"
+        className="theme-bg-primary theme-text-primary py-[120px] px-[60px] max-md:px-6"
       >
         <div className="text-center mb-20">
           <p
@@ -690,7 +690,7 @@ export default function GoldTradingPage() {
       {/* SECTION 6 — REGULATORY PARTNERS */}
       <section
         ref={partners.ref}
-        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)]"
+        className="theme-bg-secondary theme-text-primary py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)]"
       >
         <div className="text-center mb-12">
           <p

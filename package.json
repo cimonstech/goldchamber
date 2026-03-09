@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:clean": "node -e \"const fs=require('fs');['nextdev','.next'].forEach(d=>{try{fs.rmSync(d,{recursive:true,force:true})}catch(e){}})\" && next dev",
     "build": "next build",
     "build:deploy": "next build && node scripts/copy-standalone.js",
     "start": "next start",

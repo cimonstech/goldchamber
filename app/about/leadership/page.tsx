@@ -121,13 +121,14 @@ export default function LeadershipPage() {
       </section>
 
       {/* SECTION 2 — LEADERSHIP PROFILES */}
-      <section className="bg-[#050505] py-20">
+      <section className="theme-bg-primary py-20">
         {/* PROFILE 1 — Job Osei Tutu */}
         <div
           id="job-osei-tutu"
           ref={profile1.ref}
-          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start border-b border-[rgba(201,168,76,0.1)] bg-[#050505] transition-all duration-700 ease-out"
+          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start border-b theme-bg-primary transition-all duration-700 ease-out"
           style={{
+            borderColor: "var(--border-subtle)",
             opacity: profile1.visible ? 1 : 0,
             transform: profile1.visible ? "translateY(0)" : "translateY(40px)",
           }}
@@ -162,17 +163,18 @@ export default function LeadershipPage() {
           </div>
           <div className="order-1 md:order-2">
             <p
-              className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-3"
-              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+              className="font-sans text-[10px] uppercase tracking-[4px] mb-3"
+              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", color: "var(--gold-primary)" }}
             >
               FOUNDER · CLGB
             </p>
             <h2
-              className="font-display font-light text-[#FAF6EE] mb-2"
+              className="font-display font-light mb-2"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 fontSize: "clamp(40px, 5vw, 64px)",
                 fontWeight: 300,
+                color: "var(--text-primary)",
               }}
             >
               Job Osei Tutu
@@ -191,14 +193,14 @@ export default function LeadershipPage() {
                 style={{
                   fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                   fontSize: "clamp(18px, 2vw, 26px)",
-                  color: "rgba(201,168,76,0.9)",
+                  color: "var(--text-label)",
                   lineHeight: 1.5,
                 }}
               >
                 Buy into the future with hope.
               </blockquote>
             </div>
-            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "rgba(250,246,238,0.65)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
+            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
               <p>
                 In the bustling heart of Kumasi, where the rhythm of commerce pulses like a living
                 heartbeat, Job Osei Tutu&apos;s journey began. A man whose name would one day echo through
@@ -250,7 +252,7 @@ export default function LeadershipPage() {
                 brighter than gold. And in his quiet chapel, he still kneels—not to ask, but to give
                 thanks. For the vision, the struggle, and the chance to serve.
               </p>
-              <p className="font-display italic" style={{ color: "rgba(250,246,238,0.9)" }}>
+              <p className="font-display italic" style={{ color: "var(--text-primary)" }}>
                 Inspired by faith. Forged by diligence. A legacy for Ghana.
               </p>
             </div>
@@ -261,8 +263,9 @@ export default function LeadershipPage() {
         <div
           id="daniel-boateng-sarpong"
           ref={profile2.ref}
-          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start border-b border-[rgba(201,168,76,0.1)] bg-[#0a0a0a] transition-all duration-700 ease-out"
+          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start border-b theme-bg-secondary transition-all duration-700 ease-out"
           style={{
+            borderColor: "var(--border-subtle)",
             opacity: profile2.visible ? 1 : 0,
             transform: profile2.visible ? "translateY(0)" : "translateY(40px)",
           }}
@@ -297,17 +300,18 @@ export default function LeadershipPage() {
           </div>
           <div className="order-2 md:order-1">
             <p
-              className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-3"
-              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+              className="font-sans text-[10px] uppercase tracking-[4px] mb-3"
+              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", color: "var(--gold-primary)" }}
             >
               CO-FOUNDER · CLGB
             </p>
             <h2
-              className="font-display font-light text-[#FAF6EE] mb-2"
+              className="font-display font-light mb-2"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 fontSize: "clamp(40px, 5vw, 64px)",
                 fontWeight: 300,
+                color: "var(--text-primary)",
               }}
             >
               Daniel Boateng Sarpong
@@ -326,14 +330,14 @@ export default function LeadershipPage() {
                 style={{
                   fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                   fontSize: "clamp(18px, 2vw, 26px)",
-                  color: "rgba(201,168,76,0.9)",
+                  color: "var(--text-label)",
                   lineHeight: 1.5,
                 }}
               >
                 The world&apos;s problems aren&apos;t puzzles — they&apos;re invitations. And I RSVP &apos;YES&apos; in bold.
               </blockquote>
             </div>
-            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "rgba(250,246,238,0.65)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
+            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
               <p>
                 The steam from the bitter cocoa tea curled into the air like a question mark, its earthy
                 aroma mingling with the weight of the moment. Across the table, Job Osei Tutu—a man whose
@@ -396,7 +400,7 @@ export default function LeadershipPage() {
               </p>
               <p
                 className="font-sans text-[12px] italic pt-4"
-                style={{ color: "rgba(201,168,76,0.6)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
               >
                 Connect with Daniel: Forged in gold, focused on tomorrow. Let&apos;s build legacies.
               </p>
@@ -408,7 +412,7 @@ export default function LeadershipPage() {
         <div
           id="kwaku-amoah"
           ref={profile3.ref}
-          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start bg-[#050505] transition-all duration-700 ease-out"
+          className="max-w-[1200px] mx-auto px-[60px] py-[100px] grid grid-cols-1 md:grid-cols-2 gap-20 items-start theme-bg-primary transition-all duration-700 ease-out"
           style={{
             opacity: profile3.visible ? 1 : 0,
             transform: profile3.visible ? "translateY(0)" : "translateY(40px)",
@@ -444,29 +448,30 @@ export default function LeadershipPage() {
           </div>
           <div className="order-1 md:order-2">
             <p
-              className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-3"
-              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+              className="font-sans text-[10px] uppercase tracking-[4px] mb-3"
+              style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", color: "var(--gold-primary)" }}
             >
               ACTING CEO · CLGB
             </p>
             <h2
-              className="font-display font-light text-[#FAF6EE] mb-2"
+              className="font-display font-light mb-2"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 fontSize: "clamp(40px, 5vw, 64px)",
                 fontWeight: 300,
+                color: "var(--text-primary)",
               }}
             >
               Kwaku Amoah
             </h2>
             <p
               className="font-display italic text-[18px] mb-6"
-              style={{ color: "rgba(201,168,76,0.7)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
             >
               Communication, Strategy and Business Development Consultant
             </p>
             <div className="w-full h-px bg-[rgba(201,168,76,0.2)] mb-6" />
-            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "rgba(250,246,238,0.65)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
+            <div className="space-y-5 font-sans text-[14px] font-light leading-[1.9]" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
               <p>
                 Kwaku is your consummate business development professional. He has over a decade of
                 experience in the banking sector and in speaking engagements across the industry. His
@@ -485,8 +490,8 @@ export default function LeadershipPage() {
             </div>
 
             <h3
-              className="font-display text-[20px] text-[#FAF6EE] mt-8 mb-4"
-              style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
+              className="font-display text-[20px] mt-8 mb-4"
+              style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", color: "var(--text-primary)" }}
             >
               Experience & Roles
             </h3>
@@ -496,7 +501,7 @@ export default function LeadershipPage() {
                   <span className="text-[#C9A84C] text-[8px] flex-shrink-0 mt-1" aria-hidden>◆</span>
                   <span
                     className="font-sans text-[13px] font-light leading-[1.8]"
-                    style={{ color: "rgba(250,246,238,0.6)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
                   >
                     {item}
                   </span>
@@ -505,8 +510,8 @@ export default function LeadershipPage() {
             </ul>
 
             <h3
-              className="font-display text-[20px] text-[#FAF6EE] mt-8 mb-4"
-              style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
+              className="font-display text-[20px] mt-8 mb-4"
+              style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif", color: "var(--text-primary)" }}
             >
               Qualifications
             </h3>
@@ -516,7 +521,7 @@ export default function LeadershipPage() {
                   <span className="text-[#C9A84C] text-[8px] flex-shrink-0 mt-1" aria-hidden>◆</span>
                   <span
                     className="font-sans text-[13px] font-light leading-[1.8]"
-                    style={{ color: "rgba(250,246,238,0.6)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    style={{ color: "var(--text-secondary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
                   >
                     {item}
                   </span>

@@ -11,10 +11,10 @@ const items = [
 
 export function Ticker() {
   return (
-    <section className="relative z-10 bg-dark-2 border-y border-gold/30 py-3 overflow-hidden">
+    <section className="ticker-section relative z-10 border-y py-3 overflow-hidden" style={{ borderColor: "var(--border-gold)" }}>
       <div className="flex animate-ticker whitespace-nowrap">
         {[...items, ...items].map((item, i) => (
-          <span key={i} className="mx-8 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white">
+          <span key={i} className="ticker-item mx-8 font-sans text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--text-secondary)" }}>
             <span className="text-gold">◆</span> {item} <span className="text-gold">◆</span>
           </span>
         ))}

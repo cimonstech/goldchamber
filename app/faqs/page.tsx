@@ -270,7 +270,7 @@ export default function FAQsPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -289,13 +289,13 @@ export default function FAQsPage() {
           >
             Frequently Asked Questions
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[600px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -309,21 +309,24 @@ export default function FAQsPage() {
       </section>
 
       {/* SECTION 2 — FAQ SEARCH */}
-      <section className="bg-[#0a0a0a] py-12 px-[60px] max-md:px-6 border-b border-[rgba(201,168,76,0.12)]">
+      <section className="theme-bg-secondary py-12 px-[60px] max-md:px-6 border-b" style={{ borderColor: "var(--border-subtle)" }}>
         <div className="max-w-[600px] mx-auto relative">
           <Search
             size={16}
             className="absolute left-[18px] top-1/2 -translate-y-1/2"
-            style={{ color: "rgba(201,168,76,0.5)" }}
+            style={{ color: "var(--gold-primary)" }}
           />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search questions..."
-            className="w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(201,168,76,0.2)] rounded-[2px] pl-12 pr-[18px] py-4 text-[#FAF6EE] font-sans text-[14px] outline-none transition-all duration-200 placeholder:text-[rgba(250,246,238,0.25)] focus:border-[#C9A84C] focus:shadow-[0_0_0_3px_rgba(201,168,76,0.08)]"
+            className="w-full rounded-[2px] pl-12 pr-[18px] py-4 font-sans text-[14px] outline-none transition-all duration-200 focus:border-[var(--gold-primary)] focus:shadow-[0_0_0_3px_rgba(201,168,76,0.08)]"
             style={{
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              backgroundColor: "var(--input-bg)",
+              border: "1px solid var(--input-border)",
+              color: "var(--text-primary)",
             }}
           />
         </div>
@@ -332,7 +335,7 @@ export default function FAQsPage() {
       {/* SECTION 3 — FAQ CATEGORIES AND ACCORDION */}
       <section
         ref={accordionSection.ref}
-        className="bg-[#050505] py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
+        className="theme-bg-primary py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
         style={{
           opacity: accordionSection.visible ? 1 : 0,
           transform: accordionSection.visible ? "translateY(0)" : "translateY(40px)",
@@ -350,15 +353,15 @@ export default function FAQsPage() {
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                   ...(activeCategory === cat
                     ? {
-                        background: "#C9A84C",
+                        background: "var(--gold-primary)",
                         color: "#050505",
-                        borderColor: "#C9A84C",
+                        borderColor: "var(--gold-primary)",
                         fontWeight: 700,
                       }
                     : {
                         background: "transparent",
-                        color: "rgba(250,246,238,0.5)",
-                        borderColor: "rgba(201,168,76,0.2)",
+                        color: "var(--text-muted)",
+                        borderColor: "var(--input-border)",
                       }),
                 }}
               >
@@ -371,7 +374,7 @@ export default function FAQsPage() {
             <p
               className="font-sans text-[13px] text-center mt-8"
               style={{
-                color: "rgba(250,246,238,0.4)",
+                color: "var(--text-muted)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -382,19 +385,20 @@ export default function FAQsPage() {
               <p
                 className="font-sans text-[11px] mb-6"
                 style={{
-                  color: "rgba(250,246,238,0.35)",
+                  color: "var(--text-muted)",
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                 }}
               >
                 {filtered.length} questions
               </p>
-              <div className="border-t border-[rgba(201,168,76,0.1)]">
+              <div className="border-t" style={{ borderColor: "var(--border-subtle)" }}>
                 {filtered.map((faq) => {
                   const isOpen = openId === faq.id;
                   return (
                     <div
                       key={faq.id}
-                      className="border-b border-[rgba(201,168,76,0.1)] overflow-hidden"
+                      className="border-b overflow-hidden"
+                      style={{ borderColor: "var(--border-subtle)" }}
                     >
                       <button
                         type="button"
@@ -405,8 +409,8 @@ export default function FAQsPage() {
                           <span
                             className="shrink-0 font-sans text-[8px] uppercase tracking-[2px] px-2.5 py-0.5 border rounded-[2px]"
                             style={{
-                              borderColor: "rgba(201,168,76,0.25)",
-                              color: "rgba(201,168,76,0.6)",
+                              borderColor: "var(--border-gold)",
+                              color: "var(--text-label)",
                               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                             }}
                           >
@@ -414,9 +418,10 @@ export default function FAQsPage() {
                           </span>
                         )}
                         <span
-                          className="flex-1 font-display font-medium text-[20px] text-[#FAF6EE] leading-[1.3] transition-colors duration-300 group-hover:text-[#F5D06A]"
+                          className="flex-1 font-display font-medium text-[20px] leading-[1.3] transition-colors duration-300 group-hover:text-[var(--gold-highlight)]"
                           style={{
                             fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                            color: "var(--text-primary)",
                           }}
                         >
                           {faq.question}
@@ -438,7 +443,7 @@ export default function FAQsPage() {
                           <p
                             className="font-sans text-[14px] font-light leading-[1.9]"
                             style={{
-                              color: "rgba(250,246,238,0.65)",
+                              color: "var(--text-secondary)",
                               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                             }}
                           >
@@ -458,15 +463,16 @@ export default function FAQsPage() {
       {/* SECTION 4 — STILL HAVE QUESTIONS */}
       <section
         ref={ctaCards.ref}
-        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)]"
+        className="theme-bg-secondary py-20 px-[60px] max-md:px-6 border-t"
+        style={{ borderColor: "var(--border-subtle)" }}
       >
         <div className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-[2px]">
           <Link
             href="/contact"
-            className="block p-10 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.3)]"
+            className="block p-10 transition-all duration-300 hover:-translate-y-1"
             style={{
-              background: "rgba(201,168,76,0.04)",
-              border: "1px solid rgba(201,168,76,0.12)",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border-subtle)",
               opacity: ctaCards.visible[0] ? 1 : 0,
               transform: ctaCards.visible[0]
                 ? "translateY(0)"
@@ -482,9 +488,10 @@ export default function FAQsPage() {
               style={{ color: "#C9A84C" }}
             />
             <h3
-              className="font-display text-[26px] text-[#FAF6EE] mb-3"
+              className="font-display text-[26px] mb-3"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                color: "var(--text-primary)",
               }}
             >
               Still Have Questions?
@@ -492,7 +499,7 @@ export default function FAQsPage() {
             <p
               className="font-sans text-[13px] font-light leading-[1.8] mb-6"
               style={{
-                color: "rgba(250,246,238,0.55)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -512,8 +519,8 @@ export default function FAQsPage() {
             href="/membership"
             className="block p-10 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.3)]"
             style={{
-              background: "rgba(201,168,76,0.04)",
-              border: "1px solid rgba(201,168,76,0.12)",
+              background: "var(--bg-card)",
+              border: "1px solid var(--border-subtle)",
               opacity: ctaCards.visible[1] ? 1 : 0,
               transform: ctaCards.visible[1]
                 ? "translateY(0)"
@@ -529,9 +536,10 @@ export default function FAQsPage() {
               style={{ color: "#C9A84C" }}
             />
             <h3
-              className="font-display text-[26px] text-[#FAF6EE] mb-3"
+              className="font-display text-[26px] mb-3"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
+                color: "var(--text-primary)",
               }}
             >
               Ready to Join?
@@ -539,7 +547,7 @@ export default function FAQsPage() {
             <p
               className="font-sans text-[13px] font-light leading-[1.8] mb-6"
               style={{
-                color: "rgba(250,246,238,0.55)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >

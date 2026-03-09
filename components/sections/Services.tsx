@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
+// Intentional preview: 3 services on homepage; full 6 services on /gold-trading
 const services = [
   {
     number: "01",
@@ -42,7 +43,7 @@ export function Services() {
     <section
       ref={ref}
       className={cn(
-        "relative z-10 py-section md:py-section-md sm:py-section-sm bg-dark-2 transition-all duration-700 ease-out",
+        "relative z-10 py-section md:py-section-md sm:py-section-sm transition-all duration-700 ease-out",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
     >
@@ -51,18 +52,19 @@ export function Services() {
           {services.map((s) => (
             <div
               key={s.number}
-              className="group relative border border-gold/20 bg-dark/50 p-8 hover:border-gold/50 transition-all duration-300 hover:-translate-y-1"
+              className="group relative border p-8 transition-all duration-300 hover:-translate-y-1"
+            style={{ borderColor: "var(--border-gold)", backgroundColor: "var(--bg-card)" }}
             >
               <span className="absolute top-8 right-8 font-display text-6xl font-light text-gold/10">
                 {s.number}
               </span>
-              <h3 className="font-display text-h3 text-white font-semibold mb-4 relative inline-block">
-              <span className="relative">
-                {s.title}
-                <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
-              </span>
-            </h3>
-              <p className="font-sans text-white/80 text-sm leading-relaxed font-light">
+              <h3 className="font-display text-h3 font-semibold mb-4 relative inline-block" style={{ color: "var(--text-primary)" }}>
+                <span className="relative">
+                  {s.title}
+                  <span className="absolute left-0 bottom-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
+                </span>
+              </h3>
+              <p className="font-sans text-sm leading-relaxed font-light" style={{ color: "var(--text-secondary)" }}>
                 {s.copy}
               </p>
             </div>

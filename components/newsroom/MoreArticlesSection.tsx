@@ -42,7 +42,7 @@ export function MoreArticlesSection({ articles }: { articles: Article[] }) {
   const grid = useFadeUpStagger(articles.length, 0.15, 150);
 
   return (
-    <section className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6">
+    <section className="bg-[#F8F8F8] py-20 px-[60px] max-md:px-6">
       <div className="max-w-[1200px] mx-auto">
         <p
           className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-10"

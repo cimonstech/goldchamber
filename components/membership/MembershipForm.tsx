@@ -18,14 +18,14 @@ export function MembershipForm() {
       <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold block mb-4">
         Application
       </span>
-      <h2 className="font-display text-2xl md:text-3xl text-white font-light mb-4">Apply for Membership</h2>
-      <p className="font-sans text-white/80 text-base leading-relaxed mb-10 font-light max-w-2xl">
+      <h2 className="font-display text-2xl md:text-3xl text-dark font-light mb-4">Apply for Membership</h2>
+      <p className="font-sans text-dark/70 text-base leading-relaxed mb-10 font-light max-w-2xl">
         Membership is open to licensed gold buyers operating in Ghana. Complete the form below and a
         member of the CLGB team will review your submission and contact you within 3 working days.
       </p>
       {submitted ? (
         <div className="border border-gold/40 bg-gold/10 rounded-sm p-8 max-w-xl">
-          <p className="font-sans text-white font-medium leading-relaxed">
+          <p className="font-sans text-dark font-medium leading-relaxed">
             Thank you. Your application has been received. We will be in touch within 3 working
             days.
           </p>
@@ -56,72 +56,35 @@ export function MembershipForm() {
             }
           }}
         >
+          {[
+            { id: "name", name: "name", label: "Full Name", type: "text", required: true },
+            { id: "company", name: "company", label: "Company Name", type: "text", required: false },
+            { id: "email", name: "email", label: "Email Address", type: "email", required: true },
+            { id: "phone", name: "phone", label: "Phone Number", type: "tel", required: false },
+            { id: "license", name: "license", label: "GoldBod License Number", type: "text", required: false },
+          ].map((field) => (
+            <div key={field.id}>
+              <label htmlFor={field.id} className="block font-sans text-xs uppercase tracking-wider text-dark/70 mb-2">
+                {field.label}
+              </label>
+              <input
+                id={field.id}
+                name={field.name}
+                type={field.type}
+                required={field.required}
+                className="w-full bg-white border border-gold/30 px-4 py-3 text-dark font-sans text-sm focus:border-gold focus:outline-none"
+              />
+            </div>
+          ))}
           <div>
-            <label htmlFor="name" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
-              Full Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="company" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
-              Company Name
-            </label>
-            <input
-              id="company"
-              name="company"
-              type="text"
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="email" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
-              Email Address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
-              Phone Number
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="license" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
-              GoldBod License Number
-            </label>
-            <input
-              id="license"
-              name="license"
-              type="text"
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
-            />
-          </div>
-          <div>
-            <label htmlFor="tier" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
+            <label htmlFor="tier" className="block font-sans text-xs uppercase tracking-wider text-dark/70 mb-2">
               Membership Tier
             </label>
             <select
               id="tier"
               name="tier"
               required
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none"
+              className="w-full bg-white border border-gold/30 px-4 py-3 text-dark font-sans text-sm focus:border-gold focus:outline-none"
             >
               <option value="">Select tier</option>
               {tierOptions.map((t) => (
@@ -132,29 +95,29 @@ export function MembershipForm() {
             </select>
           </div>
           <div>
-            <label htmlFor="message" className="block font-sans text-xs uppercase tracking-wider text-white/80 mb-2">
+            <label htmlFor="message" className="block font-sans text-xs uppercase tracking-wider text-dark/70 mb-2">
               Message / Additional Information
             </label>
             <textarea
               id="message"
               name="message"
               rows={4}
-              className="w-full bg-dark-2 border border-gold/30 px-4 py-3 text-white font-sans text-sm focus:border-gold focus:outline-none resize-y"
+              className="w-full bg-white border border-gold/30 px-4 py-3 text-dark font-sans text-sm focus:border-gold focus:outline-none resize-y"
             />
           </div>
           {error && (
-            <p className="font-sans text-sm text-red-400">{error}</p>
+            <p className="font-sans text-sm text-red-500">{error}</p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="font-sans text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 border-2 border-gold text-gold hover:bg-gold hover:text-dark transition-all duration-300 hover:scale-105 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-dark rounded-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="font-sans text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 border-2 border-gold text-gold hover:bg-gold hover:text-dark transition-all duration-300 hover:scale-105 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-cream rounded-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {loading ? "Submitting…" : "Submit Application"}
           </button>
         </form>
       )}
-      <p className="mt-8 font-sans text-sm text-white/60">
+      <p className="mt-8 font-sans text-sm text-dark/50">
         Download our{" "}
         <a href="#" className="text-gold hover:underline">
           Membership Tracking Dashboard (PDF)

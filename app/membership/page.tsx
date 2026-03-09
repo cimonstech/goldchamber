@@ -17,7 +17,7 @@ import { ContactBanner } from "@/components/sections/ContactBanner";
 const GoldDust = dynamic(() => import("@/components/GoldDust"), { ssr: false });
 
 const inputBase =
-  "w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(201,168,76,0.2)] rounded-[2px] px-[18px] py-[14px] text-[#FAF6EE] font-sans text-[14px] outline-none transition-all duration-200 placeholder:text-[rgba(250,246,238,0.25)] focus:border-[#C9A84C] focus:shadow-[0_0_0_3px_rgba(201,168,76,0.08)]";
+  "w-full theme-input rounded-[2px] px-[18px] py-[14px] font-sans text-[14px] outline-none transition-all duration-200 border bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--gold-primary)] focus:shadow-[0_0_0_3px_var(--gold-glow)]";
 
 function useFadeUp(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -179,7 +179,7 @@ export default function MembershipPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -198,13 +198,13 @@ export default function MembershipPage() {
           >
             Join the Chamber
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[600px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -219,21 +219,22 @@ export default function MembershipPage() {
       {/* SECTION 2 — MEMBERSHIP TIERS */}
       <section
         ref={tiers.ref}
-        className="bg-[#0a0a0a] py-[120px] px-[60px] max-md:px-6"
+        className="theme-bg-secondary theme-text-primary py-[120px] px-[60px] max-md:px-6"
       >
         <div className="text-center mb-16">
           <p
-            className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-4"
-            style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+            className="font-sans text-[10px] uppercase tracking-[4px] mb-4"
+            style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif", color: "var(--gold-primary)" }}
           >
             MEMBERSHIP TIERS
           </p>
           <h2
-            className="font-display font-light text-[#FAF6EE] mb-3"
+            className="font-display font-light mb-3"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(36px, 4vw, 56px)",
               fontWeight: 300,
+              color: "var(--text-primary)",
             }}
           >
             Choose Your Level
@@ -241,7 +242,7 @@ export default function MembershipPage() {
           <p
             className="font-sans text-[14px] font-light mt-3"
             style={{
-              color: "rgba(250,246,238,0.5)",
+              color: "var(--text-secondary)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -253,9 +254,12 @@ export default function MembershipPage() {
         <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-[2px]">
           {/* CARD 1 — ASSOCIATE */}
           <div
-            className="relative overflow-hidden bg-[#111111] border border-[rgba(201,168,76,0.15)] p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[rgba(201,168,76,0.4)] hover:shadow-[0_20px_60px_rgba(201,168,76,0.1)]"
+            className="relative overflow-hidden border p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2"
             style={{
-              borderTop: "3px solid rgba(201,168,76,0.4)",
+              background: "var(--bg-card-solid)",
+              borderColor: "var(--border-gold)",
+              borderTop: "3px solid var(--border-gold-strong)",
+              boxShadow: "0 0 0 1px var(--border-subtle)",
               opacity: tiers.visible[0] ? 1 : 0,
               transform: tiers.visible[0]
                 ? "translateY(0)"
@@ -268,7 +272,7 @@ export default function MembershipPage() {
             <p
               className="font-sans text-[10px] uppercase tracking-[4px]"
               style={{
-                color: "rgba(201,168,76,0.7)",
+                color: "var(--text-label)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -277,19 +281,19 @@ export default function MembershipPage() {
             <User
               size={32}
               className="my-4"
-              style={{ color: "rgba(201,168,76,0.6)" }}
+              style={{ color: "var(--gold-primary)" }}
             />
             <p
               className="font-sans text-[13px] font-light leading-[1.8] mb-8"
               style={{
-                color: "rgba(250,246,238,0.5)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
               For individuals entering the gold trading sector who want to build
               credibility and access regulatory support.
             </p>
-            <div className="w-full h-px bg-[rgba(201,168,76,0.15)] mb-6" />
+            <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
             <ul className="space-y-3 mb-8">
               {[
                 "CLGB Certification",
@@ -302,12 +306,12 @@ export default function MembershipPage() {
                   <CheckCircle
                     size={14}
                     className="flex-shrink-0 mt-0.5"
-                    style={{ color: "#C9A84C" }}
+                    style={{ color: "var(--gold-primary)" }}
                   />
                   <span
                     className="font-sans text-[13px] font-light"
                     style={{
-                      color: "rgba(250,246,238,0.65)",
+                      color: "var(--text-secondary)",
                       fontFamily:
                         "var(--font-montserrat), Montserrat, sans-serif",
                     }}
@@ -319,9 +323,12 @@ export default function MembershipPage() {
             </ul>
             <a
               href="#membership-form"
-              className="inline-block w-full text-center border border-[#C9A84C] bg-transparent text-[#C9A84C] py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300 hover:bg-[#C9A84C] hover:text-[#050505]"
+              className="gold-outline-btn inline-block w-full text-center border py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] font-bold transition-all duration-300"
               style={{
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                borderColor: "var(--gold-primary)",
+                color: "var(--gold-primary)",
+                backgroundColor: "transparent",
               }}
             >
               Apply as Associate
@@ -330,9 +337,12 @@ export default function MembershipPage() {
 
           {/* CARD 2 — FULL MEMBER */}
           <div
-            className="relative overflow-hidden bg-[#111111] border border-[rgba(201,168,76,0.15)] p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[rgba(201,168,76,0.4)] hover:shadow-[0_20px_60px_rgba(201,168,76,0.1)]"
+            className="relative overflow-hidden border p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2"
             style={{
-              borderTop: "3px solid #C9A84C",
+              background: "var(--bg-card-solid)",
+              borderColor: "var(--border-gold-strong)",
+              borderTop: "3px solid var(--gold-primary)",
+              boxShadow: "0 0 0 1px var(--border-gold)",
               opacity: tiers.visible[1] ? 1 : 0,
               transform: tiers.visible[1]
                 ? "translateY(0)"
@@ -352,25 +362,26 @@ export default function MembershipPage() {
               MOST POPULAR
             </div>
             <p
-              className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C]"
+              className="font-sans text-[10px] uppercase tracking-[4px]"
               style={{
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                color: "var(--gold-primary)",
               }}
             >
               FULL MEMBER
             </p>
-            <Award size={32} className="my-4" style={{ color: "#C9A84C" }} />
+            <Award size={32} className="my-4" style={{ color: "var(--gold-primary)" }} />
             <p
               className="font-sans text-[13px] font-light leading-[1.8] mb-8"
               style={{
-                color: "rgba(250,246,238,0.5)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
               For established gold buyers and traders seeking full membership
               benefits, elite networking, and market intelligence.
             </p>
-            <div className="w-full h-px bg-[rgba(201,168,76,0.15)] mb-6" />
+            <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
             <ul className="space-y-3 mb-8">
               {[
                 "Everything in Associate",
@@ -385,12 +396,12 @@ export default function MembershipPage() {
                   <CheckCircle
                     size={14}
                     className="flex-shrink-0 mt-0.5"
-                    style={{ color: "#C9A84C" }}
+                    style={{ color: "var(--gold-primary)" }}
                   />
                   <span
                     className="font-sans text-[13px] font-light"
                     style={{
-                      color: "rgba(250,246,238,0.65)",
+                      color: "var(--text-secondary)",
                       fontFamily:
                         "var(--font-montserrat), Montserrat, sans-serif",
                     }}
@@ -402,9 +413,9 @@ export default function MembershipPage() {
             </ul>
             <a
               href="#membership-form"
-              className="inline-block w-full text-center py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] font-bold transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,0.35)]"
+              className="inline-block w-full text-center py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] font-bold transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5"
               style={{
-                background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                background: "var(--gold-gradient)",
                 color: "#050505",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
@@ -415,9 +426,12 @@ export default function MembershipPage() {
 
           {/* CARD 3 — CORPORATE */}
           <div
-            className="relative overflow-hidden bg-[#111111] border border-[rgba(201,168,76,0.15)] p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[rgba(201,168,76,0.4)] hover:shadow-[0_20px_60px_rgba(201,168,76,0.1)]"
+            className="relative overflow-hidden border p-[48px_40px] transition-all duration-300 ease-out hover:-translate-y-2"
             style={{
-              borderTop: "3px solid rgba(201,168,76,0.4)",
+              background: "var(--bg-card-solid)",
+              borderColor: "var(--border-gold)",
+              borderTop: "3px solid var(--border-gold-strong)",
+              boxShadow: "0 0 0 1px var(--border-subtle)",
               opacity: tiers.visible[2] ? 1 : 0,
               transform: tiers.visible[2]
                 ? "translateY(0)"
@@ -430,7 +444,7 @@ export default function MembershipPage() {
             <p
               className="font-sans text-[10px] uppercase tracking-[4px]"
               style={{
-                color: "rgba(201,168,76,0.7)",
+                color: "var(--text-label)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -439,19 +453,19 @@ export default function MembershipPage() {
             <Building2
               size={32}
               className="my-4"
-              style={{ color: "rgba(201,168,76,0.6)" }}
+              style={{ color: "var(--gold-primary)" }}
             />
             <p
               className="font-sans text-[13px] font-light leading-[1.8] mb-8"
               style={{
-                color: "rgba(250,246,238,0.5)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
               For companies, financial institutions, and large-scale operations
               requiring tailored support and institutional-level access.
             </p>
-            <div className="w-full h-px bg-[rgba(201,168,76,0.15)] mb-6" />
+            <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
             <ul className="space-y-3 mb-8">
               {[
                 "Everything in Full Member",
@@ -466,12 +480,12 @@ export default function MembershipPage() {
                   <CheckCircle
                     size={14}
                     className="flex-shrink-0 mt-0.5"
-                    style={{ color: "#C9A84C" }}
+                    style={{ color: "var(--gold-primary)" }}
                   />
                   <span
                     className="font-sans text-[13px] font-light"
                     style={{
-                      color: "rgba(250,246,238,0.65)",
+                      color: "var(--text-secondary)",
                       fontFamily:
                         "var(--font-montserrat), Montserrat, sans-serif",
                     }}
@@ -483,9 +497,12 @@ export default function MembershipPage() {
             </ul>
             <a
               href="#membership-form"
-              className="inline-block w-full text-center border border-[#C9A84C] bg-transparent text-[#C9A84C] py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300 hover:bg-[#C9A84C] hover:text-[#050505]"
+              className="gold-outline-btn inline-block w-full text-center border py-3 px-7 font-sans text-[10px] uppercase tracking-[2px] font-bold transition-all duration-300"
               style={{
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                borderColor: "var(--gold-primary)",
+                color: "var(--gold-primary)",
+                backgroundColor: "transparent",
               }}
             >
               Apply as Corporate
@@ -498,7 +515,7 @@ export default function MembershipPage() {
       <section
         id="membership-form"
         ref={formSection.ref}
-        className="relative bg-[#050505] py-[120px] px-[60px] max-md:px-6 overflow-hidden transition-all duration-700 ease-out"
+        className="theme-bg-primary theme-text-primary relative py-[120px] px-[60px] max-md:px-6 overflow-hidden transition-all duration-700 ease-out"
         style={{
           opacity: formSection.visible ? 1 : 0,
           transform: formSection.visible ? "translateY(0)" : "translateY(40px)",
@@ -508,19 +525,21 @@ export default function MembershipPage() {
         <div className="relative z-[1] max-w-[800px] mx-auto">
           <div className="text-center mb-16">
             <p
-              className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-4"
+              className="font-sans text-[10px] uppercase tracking-[4px] mb-4"
               style={{
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                color: "var(--gold-primary)",
               }}
             >
               APPLY NOW
             </p>
             <h2
-              className="font-display font-light text-[#FAF6EE] mb-3"
+              className="font-display font-light mb-3"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 fontSize: "clamp(36px, 4vw, 56px)",
                 fontWeight: 300,
+                color: "var(--text-primary)",
               }}
             >
               Begin Your Application
@@ -528,7 +547,7 @@ export default function MembershipPage() {
             <p
               className="font-sans text-[14px] font-light"
               style={{
-                color: "rgba(250,246,238,0.5)",
+                color: "var(--text-secondary)",
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
               }}
             >
@@ -542,13 +561,13 @@ export default function MembershipPage() {
               <CheckCircle
                 size={48}
                 className="mx-auto mb-6"
-                style={{ color: "#C9A84C" }}
+                style={{ color: "var(--gold-primary)" }}
               />
               <h3
-                className="font-display text-[36px] text-[#FAF6EE] mb-4"
+                className="font-display text-[36px] mb-4"
                 style={{
-                  fontFamily:
-                    "var(--font-cormorant), Cormorant Garamond, serif",
+                  color: "var(--text-primary)",
+                  fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 }}
               >
                 Application Received
@@ -568,10 +587,10 @@ export default function MembershipPage() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="rounded-[2px] p-[60px] max-md:p-8"
+              className="theme-form rounded-[2px] p-[60px] max-md:p-8"
               style={{
-                background: "rgba(201,168,76,0.04)",
-                border: "1px solid rgba(201,168,76,0.12)",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
               }}
             >
               {/* Group 1 — PERSONAL INFORMATION */}
@@ -586,7 +605,7 @@ export default function MembershipPage() {
                 >
                   PERSONAL INFORMATION
                 </div>
-                <div className="w-full h-px bg-[rgba(201,168,76,0.1)] mb-6" />
+                <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
                 <div className="mb-7">
                   <label
                     className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
@@ -730,7 +749,7 @@ export default function MembershipPage() {
                 >
                   BUSINESS INFORMATION
                 </div>
-                <div className="w-full h-px bg-[rgba(201,168,76,0.1)] mb-6" />
+                <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
                 <div className="mb-7">
                   <label
                     className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
@@ -871,7 +890,7 @@ export default function MembershipPage() {
                 >
                   MEMBERSHIP SELECTION
                 </div>
-                <div className="w-full h-px bg-[rgba(201,168,76,0.1)] mb-6" />
+                <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
                 <div className="mb-7">
                   <label
                     className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
@@ -962,7 +981,7 @@ export default function MembershipPage() {
                 >
                   DECLARATIONS
                 </div>
-                <div className="w-full h-px bg-[rgba(201,168,76,0.1)] mb-6" />
+                <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
                 {[
                   {
                     key: "declaration1" as const,
@@ -991,10 +1010,8 @@ export default function MembershipPage() {
                         className="sr-only peer"
                       />
                       <span
-                        className="block w-4 h-4 border rounded-[2px] transition-all duration-200 peer-checked:bg-[#C9A84C] peer-checked:border-[#C9A84C]"
-                        style={{
-                          borderColor: "rgba(201,168,76,0.4)",
-                        }}
+                        className="block w-4 h-4 border rounded-[2px] transition-all duration-200 peer-checked:bg-[var(--gold-primary)] peer-checked:border-[var(--gold-primary)]"
+                        style={{ borderColor: "var(--input-border)" }}
                       />
                       <svg
                         className="absolute inset-0 m-auto w-2.5 h-2.5 text-[#FAF6EE] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"

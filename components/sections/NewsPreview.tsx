@@ -57,8 +57,11 @@ export function NewsPreview() {
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <span className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold block mb-4">
+          Newsroom
+        </span>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-          <h2 className="font-display text-h1 text-white font-light">
+          <h2 className="font-display text-h1 font-light" style={{ color: "var(--text-primary)" }}>
             News & Insights
           </h2>
           <Link
@@ -73,23 +76,24 @@ export function NewsPreview() {
             <Link
               key={article.slug}
               href={`/newsroom/${article.slug}`}
-              className="group block border border-gold/20 overflow-hidden hover:border-gold/40 transition-colors"
+              className="group block border overflow-hidden transition-colors"
+              style={{ borderColor: "var(--border-gold)", backgroundColor: "var(--bg-primary)" }}
             >
-              <div className="aspect-[16/10] relative bg-dark-2">
+              <div className="aspect-[16/10] relative" style={{ backgroundColor: "var(--bg-primary)" }}>
                 <img
                   src={article.image}
                   alt=""
                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                 />
               </div>
-              <div className="p-6 border-t border-gold/20">
+              <div className="p-6 border-t" style={{ borderColor: "var(--border-subtle)" }}>
                 <p className="font-sans text-xs text-gold uppercase tracking-wider mb-1">
                   {article.date} · {article.category}
                 </p>
-                <h3 className="font-display text-lg font-semibold text-white group-hover:text-gold transition-colors mb-2">
+                <h3 className="font-display text-lg font-semibold group-hover:text-gold transition-colors mb-2" style={{ color: "var(--text-primary)" }}>
                   {article.title}
                 </h3>
-                <p className="font-sans text-sm text-white/75 line-clamp-2">
+                <p className="font-sans text-sm line-clamp-2" style={{ color: "var(--text-secondary)" }}>
                   {article.excerpt}
                 </p>
                 <span className="inline-block mt-3 font-sans text-xs font-semibold uppercase tracking-wider text-gold">

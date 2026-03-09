@@ -21,7 +21,8 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
     <aside className="hidden lg:block sticky top-24 w-full max-w-[280px] shrink-0">
       <div className="mb-8">
         <p
-          className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-4"
+          className="font-sans text-[10px] uppercase tracking-[4px] mb-4"
+          style={{ color: "var(--gold-primary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
           style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
         >
           SHARE
@@ -31,8 +32,8 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
             href={twitterUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-9 h-9 shrink-0 rounded-full border border-[rgba(201,168,76,0.2)] flex items-center justify-center transition-colors hover:border-[#C9A84C]"
-            style={{ color: "rgba(201,168,76,0.8)" }}
+            className="theme-social-link w-9 h-9 shrink-0 rounded-full border flex items-center justify-center transition-colors"
+            style={{ borderColor: "var(--input-border)", color: "var(--gold-primary)" }}
             aria-label="Share on X"
           >
             <Twitter size={18} />
@@ -41,8 +42,8 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
             href={linkedInUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.2)] flex items-center justify-center transition-colors hover:border-[#C9A84C]"
-            style={{ color: "rgba(201,168,76,0.8)" }}
+            className="theme-social-link w-9 h-9 rounded-full border flex items-center justify-center transition-colors"
+            style={{ borderColor: "var(--input-border)", color: "var(--gold-primary)" }}
             aria-label="Share on LinkedIn"
           >
             <Linkedin size={18} />
@@ -50,8 +51,8 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
           <button
             type="button"
             onClick={handleCopyLink}
-            className="w-9 h-9 rounded-full border border-[rgba(201,168,76,0.2)] flex items-center justify-center transition-colors hover:border-[#C9A84C]"
-            style={{ color: "rgba(201,168,76,0.8)" }}
+            className="theme-social-link w-9 h-9 rounded-full border flex items-center justify-center transition-colors"
+            style={{ borderColor: "var(--input-border)", color: "var(--gold-primary)" }}
             aria-label="Copy link"
           >
             <Link2 size={18} />
@@ -60,8 +61,8 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
       </div>
       <Link
         href="/newsroom"
-        className="inline-flex items-center gap-2 font-sans text-[10px] font-medium uppercase tracking-[2px] text-[#C9A84C] hover:underline"
-        style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+        className="inline-flex items-center gap-2 font-sans text-[10px] font-medium uppercase tracking-[2px] hover:underline"
+        style={{ color: "var(--gold-primary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
       >
         <ArrowLeft size={14} />
         Newsroom

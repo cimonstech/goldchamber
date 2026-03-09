@@ -18,7 +18,7 @@ import {
 const GoldDust = dynamic(() => import("@/components/GoldDust"), { ssr: false });
 
 const inputBase =
-  "w-full bg-[rgba(255,255,255,0.03)] border border-[rgba(201,168,76,0.2)] rounded-[2px] px-[18px] py-[14px] text-[#FAF6EE] font-sans text-[14px] outline-none transition-all duration-200 placeholder:text-[rgba(250,246,238,0.25)] focus:border-[#C9A84C] focus:shadow-[0_0_0_3px_rgba(201,168,76,0.08)]";
+  "w-full theme-input rounded-[2px] px-[18px] py-[14px] font-sans text-[14px] outline-none transition-all duration-200 border bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--gold-primary)] focus:shadow-[0_0_0_3px_var(--gold-glow)]";
 
 const SUBJECT_OPTIONS = [
   "General Enquiry",
@@ -135,7 +135,7 @@ export default function ContactPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -154,13 +154,13 @@ export default function ContactPage() {
           >
             Get in Touch
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[600px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -174,7 +174,7 @@ export default function ContactPage() {
       </section>
 
       {/* SECTION 2 — CONTACT DETAILS + FORM */}
-      <section className="bg-[#050505] py-[120px] px-[60px] max-md:px-6">
+      <section className="theme-bg-primary theme-text-primary py-[120px] px-[60px] max-md:px-6">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[40%_1fr] gap-20 items-start">
           {/* LEFT COLUMN — Contact Details */}
           <div
@@ -221,8 +221,8 @@ export default function ContactPage() {
                 className="flex gap-4 items-start mb-7"
               >
                 <div
-                  className="w-10 h-10 shrink-0 border border-[rgba(201,168,76,0.25)] flex items-center justify-center"
-                  style={{ color: "#C9A84C" }}
+                  className="w-10 h-10 shrink-0 border flex items-center justify-center"
+                  style={{ borderColor: "var(--border-gold)", color: "var(--gold-primary)" }}
                 >
                   <Icon size={16} />
                 </div>
@@ -248,7 +248,7 @@ export default function ContactPage() {
               </div>
             ))}
 
-            <div className="w-full h-px bg-[rgba(201,168,76,0.15)] my-10" />
+            <div className="w-full h-px my-10" style={{ backgroundColor: "var(--rule-color)" }} />
 
             <p
               className="font-sans text-[9px] uppercase tracking-[3px] mb-4 block"
@@ -270,8 +270,11 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 border border-[rgba(201,168,76,0.2)] flex items-center justify-center transition-all duration-300 hover:border-[#C9A84C] hover:bg-[rgba(201,168,76,0.08)]"
-                  style={{ color: "rgba(250,246,238,0.6)" }}
+                  className="theme-social-link w-10 h-10 border flex items-center justify-center transition-all duration-300"
+                  style={{
+                    borderColor: "var(--input-border)",
+                    color: "var(--gold-primary)",
+                  }}
                   aria-label={label}
                 >
                   <Icon size={16} />
@@ -317,10 +320,10 @@ export default function ContactPage() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="p-12 rounded-[2px]"
+                className="theme-form p-12 rounded-[2px]"
                 style={{
-                  background: "rgba(201,168,76,0.04)",
-                  border: "1px solid rgba(201,168,76,0.12)",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-subtle)",
                 }}
               >
                 <div className="mb-6">
@@ -433,8 +436,8 @@ export default function ContactPage() {
                       className="sr-only peer"
                     />
                     <span
-                      className="block w-4 h-4 border rounded-[2px] transition-all duration-200 peer-checked:bg-[#C9A84C] peer-checked:border-[#C9A84C]"
-                      style={{ borderColor: "rgba(201,168,76,0.4)" }}
+                      className="block w-4 h-4 border rounded-[2px] transition-all duration-200 peer-checked:bg-[var(--gold-primary)] peer-checked:border-[var(--gold-primary)]"
+                      style={{ borderColor: "var(--input-border)" }}
                     />
                     <svg
                       className="absolute inset-0 m-auto w-2.5 h-2.5 text-[#FAF6EE] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
@@ -495,7 +498,7 @@ export default function ContactPage() {
       {/* SECTION 3 — OFFICE LOCATION */}
       <section
         ref={locationSection.ref}
-        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
+        className="theme-bg-secondary theme-text-primary py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
         style={{
           opacity: locationSection.visible ? 1 : 0,
           transform: locationSection.visible ? "translateY(0)" : "translateY(40px)",
@@ -523,9 +526,10 @@ export default function ContactPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="max-w-[800px] mx-auto">
             <div
-              className="border border-[rgba(201,168,76,0.2)] overflow-hidden"
+              className="border overflow-hidden"
+              style={{ borderColor: "var(--border-gold)" }}
             >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254508.30!2d-1.6731!3d6.6885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb96f35b7de625%3A0x8f1e9a4f7a0b0e3b!2sKumasi%2C%20Ghana!5e0!3m2!1sen!2sgh!4v1"
@@ -535,60 +539,10 @@ export default function ContactPage() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="CLGB Secretariat - Kumasi, Ghana"
+                title="CLGB - Kumasi, Ghana"
               />
             </div>
-            <div>
-              <h3
-                className="font-display text-[28px] text-[#FAF6EE] mb-4"
-                style={{
-                  fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
-                }}
-              >
-                CLGB Secretariat
-              </h3>
-              <p
-                className="font-sans text-[13px] mb-8"
-                style={{
-                  color: "rgba(250,246,238,0.6)",
-                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-                }}
-              >
-                Kumasi, Ghana
-              </p>
-              {[
-                { icon: MapPin, label: "DIGITAL ADDRESS", value: "AK-009-2554" },
-                { icon: Phone, label: "TELEPHONE", value: "+233 266 10 9898" },
-                { icon: Mail, label: "EMAIL", value: "info@chamberofgoldbuyers.com" },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex gap-4 items-start mb-7">
-                  <div
-                    className="w-10 h-10 shrink-0 border border-[rgba(201,168,76,0.25)] flex items-center justify-center"
-                    style={{ color: "#C9A84C" }}
-                  >
-                    <Icon size={16} />
-                  </div>
-                  <div>
-                    <p
-                      className="font-sans text-[9px] uppercase tracking-[2px] mb-1"
-                      style={{
-                        color: "rgba(201,168,76,0.6)",
-                        fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-                      }}
-                    >
-                      {label}
-                    </p>
-                    <p
-                      className="font-sans text-[14px] text-[#FAF6EE]"
-                      style={{
-                        fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
-                      }}
-                    >
-                      {value}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-6 text-center">
               <a
                 href="https://www.google.com/maps/dir/?api=1&destination=Kumasi+Ghana"
                 target="_blank"
@@ -608,8 +562,9 @@ export default function ContactPage() {
       {/* SECTION 4 — FAQ TEASER */}
       <section
         ref={faqSection.ref}
-        className="bg-[#050505] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)] transition-all duration-700 ease-out"
+        className="theme-bg-primary theme-text-primary py-20 px-[60px] max-md:px-6 border-t transition-all duration-700 ease-out"
         style={{
+          borderTopColor: "var(--border-subtle)",
           opacity: faqSection.visible ? 1 : 0,
           transform: faqSection.visible ? "translateY(0)" : "translateY(40px)",
         }}
@@ -645,9 +600,11 @@ export default function ContactPage() {
           </p>
           <Link
             href="/faqs"
-            className="inline-block border border-[#C9A84C] bg-transparent text-[#C9A84C] py-3 px-8 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300 hover:bg-[#C9A84C] hover:text-[#050505]"
+            className="gold-outline-btn inline-block border bg-transparent py-3 px-8 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300"
             style={{
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              borderColor: "var(--gold-primary)",
+              color: "var(--gold-primary)",
             }}
           >
             View FAQs →

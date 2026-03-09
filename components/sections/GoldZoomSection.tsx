@@ -10,8 +10,8 @@ const SPLIT_SCROLL_VH = 100;
 const ZONE_BUFFER_VH = 80; // extra vh of section after zone ends — space before ticker, overlay never enters ticker
 const EARLY_START_VH = 100; // second animation starts this many vh before section (removes blank gap after hero)
 const GOLD = "#C9A84C";
-const CARD_GLASS_BG = "rgba(15,15,15,0.55)";
-const SECTION_BG = "#050505";
+const CARD_GLASS_BG = "rgba(250,246,238,0.88)";
+const SECTION_BG = "#FAF6EE";
 const RULE_COLOR = "rgba(201,168,76,0.15)";
 const GOLDBAR_PNG = "/goldbar.png";
 
@@ -312,14 +312,14 @@ export function GoldZoomSection({ totalFrames }: GoldZoomSectionProps) {
   return (
     <>
       {!loaded && (
-        <div className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-black">
-          <div className="w-64 h-0.5 bg-[#1a1a1a] rounded-full overflow-hidden">
+        <div className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#FAF6EE]">
+          <div className="w-64 h-0.5 bg-[#E8E0D0] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{ width: `${loadProgress}%`, backgroundColor: GOLD }}
             />
           </div>
-          <p className="font-sans text-sm text-white/70 uppercase tracking-wider mt-4">
+          <p className="font-sans text-sm text-dark/60 uppercase tracking-wider mt-4">
             Loading...
           </p>
         </div>
@@ -449,7 +449,7 @@ export function GoldZoomSection({ totalFrames }: GoldZoomSectionProps) {
                     <p className="font-sans text-[11px] uppercase font-semibold text-gold tracking-wider mb-1.5">
                       {CARD_LABELS[openDetailIndex]}
                     </p>
-                    <p className="font-sans text-white/90 text-xs leading-relaxed font-light" style={{ margin: 0 }}>
+                    <p className="font-sans text-dark/80 text-xs leading-relaxed font-light" style={{ margin: 0 }}>
                       {CARD_DESCRIPTIONS[CARD_LABELS[openDetailIndex]]}
                     </p>
                     <button
@@ -619,7 +619,7 @@ export function GoldZoomSection({ totalFrames }: GoldZoomSectionProps) {
                                   boxShadow: `0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px ${GOLD}40`,
                                 }}
                               >
-                                <p className="font-sans text-white/90 text-xs leading-relaxed font-light" style={{ margin: 0 }}>
+                                <p className="font-sans text-dark/80 text-xs leading-relaxed font-light" style={{ margin: 0 }}>
                                   {CARD_DESCRIPTIONS[label]}
                                 </p>
                                 <button

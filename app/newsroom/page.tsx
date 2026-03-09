@@ -131,7 +131,7 @@ export default function NewsroomPage() {
           <p
             className="mb-5 font-sans text-[9px] uppercase tracking-[3px]"
             style={{
-              color: "rgba(201,168,76,0.6)",
+              color: "rgba(255,255,255,0.9)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >
@@ -150,13 +150,13 @@ export default function NewsroomPage() {
           >
             News & Insights
           </h1>
-          <div className="w-[60px] h-px bg-[#C9A84C] mx-auto my-6" />
+          <div className="w-[60px] h-px bg-white/90 mx-auto my-6" />
           <p
             className="font-display italic mx-auto max-w-[600px]"
             style={{
               fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
               fontSize: "clamp(16px, 1.8vw, 22px)",
-              color: "rgba(201,168,76,0.8)",
+              color: "rgba(255,255,255,0.95)",
               opacity: heroSubtitleVisible ? 1 : 0,
               transform: heroSubtitleVisible ? "translateY(0)" : "translateY(30px)",
               transition:
@@ -173,13 +173,13 @@ export default function NewsroomPage() {
       {featuredArticle && (
         <section
           ref={featured.ref}
-          className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
+          className="theme-bg-secondary theme-text-primary py-20 px-[60px] max-md:px-6 transition-all duration-700 ease-out"
           style={{
             opacity: featured.visible ? 1 : 0,
             transform: featured.visible ? "translateY(0)" : "translateY(40px)",
           }}
         >
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 border border-[rgba(201,168,76,0.2)] overflow-hidden">
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 border overflow-hidden" style={{ borderColor: "var(--border-gold)" }}>
             <div className="relative min-h-[400px]">
               <Image
                 src={featuredArticle.image}
@@ -201,14 +201,14 @@ export default function NewsroomPage() {
                 className="absolute top-6 right-6 px-4 py-1.5 font-sans text-[8px] uppercase tracking-[2px] text-[#C9A84C]"
                 style={{
                   background: "rgba(5,5,5,0.8)",
-                  border: "1px solid rgba(201,168,76,0.4)",
+                  border: "1px solid var(--border-gold-strong)",
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                 }}
               >
                 FEATURED
               </div>
             </div>
-            <div className="bg-[#111111] p-12">
+            <div className="theme-bg-tertiary p-12">
               <p
                 className="font-sans text-[10px] uppercase tracking-[3px] mb-4"
                 style={{
@@ -254,7 +254,7 @@ export default function NewsroomPage() {
       )}
 
       {/* SECTION 3 — ALL ARTICLES GRID */}
-      <section className="bg-[#050505] py-20 px-[60px] max-md:px-6">
+      <section className="theme-bg-primary theme-text-primary py-20 px-[60px] max-md:px-6">
         <div className="max-w-[1200px] mx-auto">
           <p
             className="font-sans text-[10px] uppercase tracking-[4px] text-[#C9A84C] mb-6"
@@ -275,15 +275,15 @@ export default function NewsroomPage() {
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                   ...(activeCategory === cat
                     ? {
-                        background: "#C9A84C",
+                        background: "var(--gold-primary)",
                         color: "#050505",
-                        borderColor: "#C9A84C",
+                        borderColor: "var(--gold-primary)",
                         fontWeight: 700,
                       }
                     : {
                         background: "transparent",
-                        color: "rgba(250,246,238,0.5)",
-                        borderColor: "rgba(201,168,76,0.2)",
+                        color: "var(--text-muted)",
+                        borderColor: "var(--input-border)",
                       }),
                 }}
               >
@@ -308,10 +308,10 @@ export default function NewsroomPage() {
                     router.push(`/newsroom/${article.slug}`);
                   }
                 }}
-                className="group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.3)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)]"
+                className="group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] hover:border-[var(--border-gold-strong)]"
                 style={{
-                  background: "#111111",
-                  border: "1px solid rgba(201,168,76,0.1)",
+                  background: "var(--bg-tertiary)",
+                  border: "1px solid var(--border-subtle)",
                   opacity: articlesGrid.visible[i] ? 1 : 0,
                   transform: articlesGrid.visible[i]
                     ? "translateY(0)"
@@ -333,7 +333,7 @@ export default function NewsroomPage() {
                     className="absolute bottom-4 left-4 px-3 py-1 font-sans text-[8px] uppercase tracking-[2px] text-[#C9A84C]"
                     style={{
                       background: "rgba(5,5,5,0.85)",
-                      border: "1px solid rgba(201,168,76,0.3)",
+                      border: "1px solid var(--border-gold)",
                       fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                     }}
                   >
@@ -385,8 +385,9 @@ export default function NewsroomPage() {
       {/* SECTION 4 — NEWSLETTER SIGNUP */}
       <section
         ref={newsletter.ref}
-        className="bg-[#0a0a0a] py-20 px-[60px] max-md:px-6 border-t border-[rgba(201,168,76,0.12)] transition-all duration-700 ease-out"
+        className="theme-bg-secondary theme-text-primary py-20 px-[60px] max-md:px-6 border-t transition-all duration-700 ease-out"
         style={{
+          borderTopColor: "var(--border-subtle)",
           opacity: newsletter.visible ? 1 : 0,
           transform: newsletter.visible ? "translateY(0)" : "translateY(40px)",
         }}
@@ -433,7 +434,7 @@ export default function NewsroomPage() {
           ) : (
             <form
               onSubmit={handleNewsletterSubmit}
-              className="flex flex-col sm:flex-row gap-0 max-w-[480px] mx-auto"
+              className="theme-form flex flex-col sm:flex-row gap-0 max-w-[480px] mx-auto"
             >
               <input
                 type="email"
@@ -441,7 +442,7 @@ export default function NewsroomPage() {
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Your email address"
                 required
-                className="flex-1 bg-[rgba(255,255,255,0.03)] border border-[rgba(201,168,76,0.2)] sm:border-r-0 px-5 py-3.5 text-[#FAF6EE] font-sans text-[13px] outline-none focus:border-[#C9A84C] transition-colors"
+                className="theme-input flex-1 sm:border-r-0 px-5 py-3.5 font-sans text-[13px] outline-none transition-colors border bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-[var(--gold-primary)]"
                 style={{
                   fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                 }}

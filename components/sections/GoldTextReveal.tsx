@@ -9,12 +9,11 @@ const GOLD_GRADIENT =
   "linear-gradient(135deg, #8B6914 0%, #F5D06A 40%, #C9A84C 70%, #F5D06A 100%)";
 
 const CARD_STYLE = {
-  background: "rgba(201, 168, 76, 0.08)",
-  border: "1px solid rgba(201, 168, 76, 0.25)",
-  backdropFilter: "blur(12px)",
-  WebkitBackdropFilter: "blur(12px)",
-  boxShadow:
-    "0 8px 32px rgba(201, 168, 76, 0.12), inset 0 1px 0 rgba(201, 168, 76, 0.15)",
+  background: "var(--bg-card)",
+  border: "1px solid var(--border-gold)",
+  backdropFilter: "var(--card-backdrop)",
+  WebkitBackdropFilter: "var(--card-backdrop)",
+  boxShadow: "0 8px 32px var(--shadow-gold), inset 0 1px 0 var(--border-gold)",
   borderRadius: 16,
   minWidth: 180,
 } as const;
@@ -102,7 +101,7 @@ export function GoldTextReveal() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100vh] bg-dark overflow-hidden"
+      className="gold-text-reveal-section theme-text-primary relative min-h-[100vh] overflow-hidden"
       style={{ marginTop: "-30vh" }}
       aria-label="Ghana's Gold. The World's Standard."
       onMouseEnter={() => setIsReticleActive(true)}
@@ -181,7 +180,7 @@ export function GoldTextReveal() {
                 fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                 fontWeight: 300,
                 fontSize: "clamp(11px, 1.2vw, 14px)",
-                color: "rgba(250,246,238,0.55)",
+                color: "var(--text-secondary)",
                 letterSpacing: "1px",
               }}
             >
@@ -193,16 +192,16 @@ export function GoldTextReveal() {
               style={{ margin: "16px 0" }}
             >
               <div className="flex flex-col items-center">
-                <Shield size={16} style={{ color: "rgba(201,168,76,0.6)" }} />
-                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "rgba(250,246,238,0.4)" }}>Certified</span>
+                <Shield size={16} style={{ color: "var(--text-label)" }} />
+                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "var(--text-muted)" }}>Certified</span>
               </div>
               <div className="flex flex-col items-center">
-                <Globe size={16} style={{ color: "rgba(201,168,76,0.6)" }} />
-                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "rgba(250,246,238,0.4)" }}>Global Standard</span>
+                <Globe size={16} style={{ color: "var(--text-label)" }} />
+                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "var(--text-muted)" }}>Global Standard</span>
               </div>
               <div className="flex flex-col items-center">
-                <TrendingUp size={16} style={{ color: "rgba(201,168,76,0.6)" }} />
-                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "rgba(250,246,238,0.4)" }}>Live Market</span>
+                <TrendingUp size={16} style={{ color: "var(--text-label)" }} />
+                <span className="mt-1 font-sans text-[8px] uppercase tracking-[2px]" style={{ color: "var(--text-muted)" }}>Live Market</span>
               </div>
             </div>
             <Link
@@ -211,8 +210,8 @@ export function GoldTextReveal() {
               style={{
                 marginTop: 28,
                 marginBottom: 40,
-                background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-                color: "#050505",
+                background: "var(--gold-gradient)",
+                color: "var(--text-primary)",
                 border: "none",
                 pointerEvents: "auto",
               }}
@@ -224,19 +223,19 @@ export function GoldTextReveal() {
             <div className="md:hidden pointer-events-none" style={{ marginTop: 32 }}>
               {sectionVisible && (
                 <div className="gold-float-3 will-change-transform scale-[0.85] p-4 px-5" style={CARD_STYLE}>
-                  <Award size={14} className="absolute top-3 left-3" style={{ color: "rgba(201,168,76,0.7)" }} />
+                  <Award size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
                   <div className="flex items-center gap-4 pl-6">
                     <div className="relative shrink-0">
                       <svg width="44" height="44" className="-rotate-90">
-                        <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(201,168,76,0.2)" strokeWidth="2" />
-                        <circle cx="22" cy="22" r="20" fill="none" stroke="#C9A84C" strokeWidth="2" strokeDasharray={`${2 * Math.PI * 20 * 0.999} ${2 * Math.PI * 20}`} strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(201,168,76,0.6))" }} />
+                        <circle cx="22" cy="22" r="20" fill="none" stroke="var(--input-border)" strokeWidth="2" />
+                        <circle cx="22" cy="22" r="20" fill="none" stroke="var(--gold-primary)" strokeWidth="2" strokeDasharray={`${2 * Math.PI * 20 * 0.999} ${2 * Math.PI * 20}`} strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(201,168,76,0.6))" }} />
                       </svg>
                     </div>
                     <div>
                       <Odometer9999 visible={sectionVisible} />
-                      <div className="h-px my-2" style={{ background: "rgba(201,168,76,0.2)" }} />
-                      <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "rgba(250,246,238,0.6)" }}>FINENESS STANDARD</div>
-                      <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "rgba(201,168,76,0.7)" }}>LONDON GOOD DELIVERY</div>
+                      <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                      <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>FINENESS STANDARD</div>
+                      <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>LONDON GOOD DELIVERY</div>
                     </div>
                   </div>
                 </div>
@@ -249,47 +248,47 @@ export function GoldTextReveal() {
             <>
               <div className="absolute gold-card-1 pointer-events-none">
                 <div className="gold-float-1 will-change-transform scale-[0.85] md:scale-100 p-4 px-5 md:py-6 md:px-7" style={CARD_STYLE}>
-                  <Users size={14} className="absolute top-3 left-3" style={{ color: "rgba(201,168,76,0.7)" }} />
-                  <div className="absolute top-3 right-3 w-3 h-3" style={{ background: "#F5D06A", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }} />
-                  <div className="font-display font-semibold text-[28px] md:text-[42px] text-[#F5D06A] pl-6" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
+                  <Users size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
+                  <div className="absolute top-3 right-3 w-3 h-3" style={{ background: "var(--gold-highlight)", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }} />
+                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
                     {memberCount}{memberCount >= 500 ? "+" : ""}
                   </div>
-                  <div className="h-px my-2" style={{ background: "rgba(201,168,76,0.2)" }} />
-                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "rgba(250,246,238,0.6)" }}>ACTIVE MEMBERS</div>
-                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "rgba(201,168,76,0.7)" }}>CLGB CERTIFIED</div>
+                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>ACTIVE MEMBERS</div>
+                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>CLGB CERTIFIED</div>
                 </div>
               </div>
               <div className="absolute gold-card-2 pointer-events-none">
                 <div className="gold-float-2 will-change-transform scale-[0.85] md:scale-100 p-4 px-5 md:py-6 md:px-7" style={CARD_STYLE}>
-                  <BarChart2 size={14} className="absolute top-3 left-3" style={{ color: "rgba(201,168,76,0.7)" }} />
+                  <BarChart2 size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
                   <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-[#4ade80]" style={{ boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
-                  <div className="font-display font-semibold text-[28px] md:text-[42px] text-[#F5D06A] pl-6" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
+                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
                     {goldPrice != null ? `GHS ${goldPrice.toLocaleString("en-GH", { minimumFractionDigits: 2 })}` : "---"}
                   </div>
                   <div style={{ marginTop: 12 }}>
                     <MiniLineChart visible={sectionVisible} pathD={pathD} fillPathD={fillPathD} />
                   </div>
-                  <div className="h-px my-2" style={{ background: "rgba(201,168,76,0.2)" }} />
-                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "rgba(250,246,238,0.6)" }}>GOLD · 24K</div>
-                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "rgba(201,168,76,0.7)" }}>PER TROY OZ</div>
+                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>GOLD · 24K</div>
+                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>PER TROY OZ</div>
                 </div>
               </div>
               {/* Card 3 — desktop: absolute below button */}
               <div className="absolute gold-card-3-desktop pointer-events-none hidden md:block">
                 <div className="gold-float-3 will-change-transform scale-[0.85] md:scale-100 p-4 px-5 md:py-6 md:px-7" style={CARD_STYLE}>
-                  <Award size={14} className="absolute top-3 left-3" style={{ color: "rgba(201,168,76,0.7)" }} />
+                  <Award size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
                   <div className="flex items-center gap-4 pl-6">
                     <div className="relative shrink-0">
                       <svg width="44" height="44" className="-rotate-90">
-                        <circle cx="22" cy="22" r="20" fill="none" stroke="rgba(201,168,76,0.2)" strokeWidth="2" />
-                        <circle cx="22" cy="22" r="20" fill="none" stroke="#C9A84C" strokeWidth="2" strokeDasharray={`${2 * Math.PI * 20 * 0.999} ${2 * Math.PI * 20}`} strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(201,168,76,0.6))" }} />
+                        <circle cx="22" cy="22" r="20" fill="none" stroke="var(--input-border)" strokeWidth="2" />
+                        <circle cx="22" cy="22" r="20" fill="none" stroke="var(--gold-primary)" strokeWidth="2" strokeDasharray={`${2 * Math.PI * 20 * 0.999} ${2 * Math.PI * 20}`} strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(201,168,76,0.6))" }} />
                       </svg>
                     </div>
                     <div>
                       <Odometer9999 visible={sectionVisible} />
-                      <div className="h-px my-2" style={{ background: "rgba(201,168,76,0.2)" }} />
-                      <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "rgba(250,246,238,0.6)" }}>FINENESS STANDARD</div>
-                      <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "rgba(201,168,76,0.7)" }}>LONDON GOOD DELIVERY</div>
+                      <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                      <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>FINENESS STANDARD</div>
+                      <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>LONDON GOOD DELIVERY</div>
                     </div>
                   </div>
                 </div>
@@ -305,7 +304,7 @@ export function GoldTextReveal() {
 function Odometer9999({ visible }: { visible: boolean }) {
   const digits = ["9", "9", "9", ".", "9"];
   return (
-    <div className="font-display font-semibold text-[28px] md:text-[42px] text-[#F5D06A] flex items-baseline" style={{ fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
+    <div className="font-display font-semibold text-[28px] md:text-[42px] flex items-baseline" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
       {digits.map((d, i) =>
         d === "." ? (
           <span key={i} style={{ opacity: visible ? 1 : 0, transition: "opacity 200ms ease 400ms" }}>.</span>
@@ -338,20 +337,21 @@ function MiniLineChart({ visible, pathD, fillPathD }: { visible: boolean; pathD:
       <svg viewBox={`0 0 100 ${CHART_HEIGHT}`} preserveAspectRatio="none" className="w-full h-full">
         <defs>
           <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="rgba(201,168,76,0.15)" />
+            <stop offset="0" stopColor="var(--input-border)" />
             <stop offset="1" stopColor="transparent" />
           </linearGradient>
         </defs>
         <path d={fillPathD} fill="url(#chartFill)" stroke="none" opacity={visible ? 1 : 0} style={{ transition: "opacity 1500ms ease-in-out" }} />
-        <path d={pathD} fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" pathLength={100} strokeDasharray={100} strokeDashoffset={visible ? 0 : 100} style={{ transition: "stroke-dashoffset 1500ms ease-in-out" }} />
+        <path d={pathD} fill="none" stroke="var(--gold-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" pathLength={100} strokeDasharray={100} strokeDashoffset={visible ? 0 : 100} style={{ transition: "stroke-dashoffset 1500ms ease-in-out" }} />
       </svg>
       <div
-        className="absolute rounded-full bg-[#F5D06A]"
+        className="absolute rounded-full"
         style={{
           right: 0,
           top: lastY - 2,
           width: 4,
           height: 4,
+          backgroundColor: "var(--gold-primary)",
           animation: visible ? "pulse-dot 2s ease-in-out infinite" : "none",
         }}
       />

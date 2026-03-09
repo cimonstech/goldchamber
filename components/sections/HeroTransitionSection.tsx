@@ -52,7 +52,7 @@ export function HeroTransitionSection() {
   const areaD = `${pathD} L ${padding.left + chartW} ${padding.top + chartH} L ${padding.left} ${padding.top + chartH} Z`;
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-dark overflow-hidden pb-32">
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-cream overflow-hidden pb-32">
       <div
         className="absolute inset-0 pointer-events-none opacity-30"
         style={{
@@ -61,11 +61,11 @@ export function HeroTransitionSection() {
       />
 
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 animate-gold-zoom-in">
-        <div className="border border-gold/30 bg-dark-2/90 rounded-lg overflow-hidden">
+        <div className="border border-gold/30 bg-white/90 rounded-lg overflow-hidden">
           <div className="p-4 border-b border-gold/20 flex flex-wrap items-center justify-between gap-4">
             <span className="font-sans text-xs uppercase tracking-wider text-gold/80">XAU/USD · Spot</span>
             {price?.usd && (
-              <span className="font-sans text-sm text-cream">
+              <span className="font-sans text-sm text-dark">
                 24K {formatUSD(price.usd.price_24k)}
                 {price.ghs && (
                   <span className="text-gold/90 ml-3">GHS {formatGHS(price.ghs.price_24k)}</span>

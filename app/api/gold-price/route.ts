@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 
 const APISED_BASE = "https://gold.g.apised.com/v1/latest";
 
+// Vercel: set NEXT_PUBLIC_APISED_SECRET or APISED_API_KEY in Project Settings → Environment Variables
+
 export type GoldPriceResponse = {
   usd: {
     price: number;
