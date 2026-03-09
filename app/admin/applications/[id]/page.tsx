@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle, MessageCircle, XCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, CheckCircle, Loader2, MessageCircle, XCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Application = {
@@ -27,6 +27,20 @@ type Application = {
   review_notes: string | null;
   submitted_at: string;
   reviewed_at: string | null;
+};
+
+type ApplicationDocument = {
+  id: string;
+  document_type: string;
+  file_url: string;
+  file_name: string | null;
+};
+
+const DOC_TYPE_LABELS: Record<string, string> = {
+  ghana_card: "Ghana Card",
+  reg_certificate: "Registration Certificate",
+  business_registration: "Business Registration",
+  other: "Other",
 };
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; border: string }> = {
@@ -81,23 +95,38 @@ export default function AdminApplicationDetailPage() {
   const router = useRouter();
   const id = params.id as string;
   const [app, setApp] = useState<Application | null>(null);
+  const [documents, setDocuments] = useState<ApplicationDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewNotes, setReviewNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [confirmAction, setConfirmAction] = useState<"approve" | "reject" | "request_info" | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [requestInfoMessage, setRequestInfoMessage] = useState("");
+  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const fetchApp = useCallback(async () => {
-    const supabase = createClient();
-    const { data, error } = await supabase.from("applications").select("*").eq("id", id).single();
-    if (error || !data) {
+    try {
+      const res = await fetch(`/api/admin/applications/${id}`);
+      if (!res.ok) {
+        setApp(null);
+        setDocuments([]);
+        return;
+      }
+      const { application: data, documents: docs } = await res.json();
+      if (!data) {
+        setApp(null);
+        setDocuments([]);
+        return;
+      }
+      setApp(data as Application);
+      setReviewNotes((data as Application).review_notes ?? "");
+      setDocuments((docs ?? []) as ApplicationDocument[]);
+    } catch {
       setApp(null);
-      return;
+      setDocuments([]);
+    } finally {
+      setLoading(false);
     }
-    setApp(data as Application);
-    setReviewNotes((data as Application).review_notes ?? "");
-    setLoading(false);
   }, [id]);
 
   useEffect(() => {
@@ -115,72 +144,77 @@ export default function AdminApplicationDetailPage() {
   const handleApprove = async () => {
     if (!app) return;
     setSaving(true);
-    const supabase = createClient();
-    let membershipNumber: string;
     try {
-      const { data } = await supabase.rpc("generate_membership_number");
-      membershipNumber = data ?? `CLGB-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+      const res = await fetch("/api/admin/approve-member", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ applicationId: app.id }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setToast({
+          type: "error",
+          message: `Failed to create account: ${data.error ?? "Unknown error"}. Please try again.`,
+        });
+        setTimeout(() => setToast(null), 5000);
+        setSaving(false);
+        return;
+      }
+
+      setToast({
+        type: "success",
+        message: `Account created. Welcome email sent to ${app.email}`,
+      });
+      setTimeout(() => setToast(null), 5000);
+      setConfirmAction(null);
+      setApp((prev) => (prev ? { ...prev, status: "approved" } : null));
     } catch {
-      membershipNumber = `CLGB-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+      setToast({
+        type: "error",
+        message: "Failed to create account. Please try again.",
+      });
+      setTimeout(() => setToast(null), 5000);
+    } finally {
+      setSaving(false);
     }
-    const now = new Date().toISOString();
-    await supabase
-      .from("applications")
-      .update({ status: "approved", reviewed_at: now, review_notes: reviewNotes })
-      .eq("id", app.id);
-    if (app.profile_id) {
-      await supabase
-        .from("profiles")
-        .update({
-          membership_status: "active",
-          membership_number: membershipNumber,
-          membership_tier: app.membership_tier,
-          approved_at: now,
-          full_name: app.full_name,
-          email: app.email,
-          phone: app.phone,
-          business_name: app.business_name,
-          business_registration: app.business_registration,
-          business_address: app.business_address,
-          gold_activity: app.gold_activity,
-          nationality: app.nationality,
-          date_of_birth: app.date_of_birth,
-          residential_address: app.residential_address,
-          years_in_operation: app.years_in_operation,
-          how_heard: app.how_heard,
-          additional_info: app.additional_info,
-        })
-        .eq("id", app.profile_id);
-    }
-    // TODO: Send approval notification email to applicant
-    console.log("TODO: Send approval notification to", app.email, { membershipNumber });
-    setConfirmAction(null);
-    setSaving(false);
-    router.push("/admin/applications");
   };
 
   const handleReject = async () => {
     if (!app || !rejectReason.trim()) return;
     setSaving(true);
-    const supabase = createClient();
-    const now = new Date().toISOString();
-    await supabase
-      .from("applications")
-      .update({
-        status: "rejected",
-        reviewed_at: now,
-        review_notes: reviewNotes ? `${reviewNotes}\n\nRejection reason: ${rejectReason}` : `Rejection reason: ${rejectReason}`,
-      })
-      .eq("id", app.id);
-    if (app.profile_id) {
-      await supabase.from("profiles").update({ membership_status: "rejected" }).eq("id", app.profile_id);
+    try {
+      const res = await fetch("/api/admin/reject-application", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicationId: app.id,
+          reason: rejectReason.trim(),
+          reviewNotes: reviewNotes || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setToast({ type: "error", message: data.error ?? "Failed to reject application." });
+        setTimeout(() => setToast(null), 5000);
+        return;
+      }
+      if (app.profile_id) {
+        const supabase = createClient();
+        await supabase.from("profiles").update({ membership_status: "rejected" }).eq("id", app.profile_id);
+      }
+      setConfirmAction(null);
+      setRejectReason("");
+      setApp((prev) => (prev ? { ...prev, status: "rejected" } : null));
+      setToast({ type: "success", message: "Application rejected. Email sent to applicant." });
+      setTimeout(() => setToast(null), 5000);
+      setTimeout(() => router.push("/admin/applications"), 1500);
+    } catch {
+      setToast({ type: "error", message: "Failed to reject application." });
+      setTimeout(() => setToast(null), 5000);
+    } finally {
+      setSaving(false);
     }
-    // TODO: Send rejection notification email to applicant
-    console.log("TODO: Send rejection notification to", app.email, { reason: rejectReason });
-    setConfirmAction(null);
-    setRejectReason("");
-    setSaving(false);
-    router.push("/admin/applications");
   };
 
   const handleRequestMoreInfo = async () => {
@@ -200,7 +234,7 @@ export default function AdminApplicationDetailPage() {
     router.push("/admin/applications");
   };
 
-  if (loading || !app) {
+  if (loading) {
     return (
       <div className="p-8">
         <div className="h-8 w-48 animate-pulse rounded bg-[rgba(250,246,238,0.08)] mb-8" />
@@ -209,8 +243,54 @@ export default function AdminApplicationDetailPage() {
     );
   }
 
+  if (!app) {
+    return (
+      <div className="p-8">
+        <Link
+          href="/admin/applications"
+          className="inline-flex items-center gap-2 font-sans text-[12px] uppercase tracking-[2px] mb-6 hover:opacity-80 transition-opacity"
+          style={{ color: "#C9A84C", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+        >
+          <ArrowLeft size={16} />
+          Back to Applications
+        </Link>
+        <p
+          className="font-sans text-[14px]"
+          style={{ color: "rgba(250,246,238,0.6)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+        >
+          Application not found.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-8">
+      {/* Toast */}
+      {toast && (
+        <div
+          className="fixed top-4 right-4 z-[100] flex items-center gap-3 px-4 py-3 rounded shadow-lg animate-in slide-in-from-top-2"
+          style={{
+            background: "#111111",
+            borderLeft: `4px solid ${toast.type === "success" ? "#22c55e" : "#ef4444"}`,
+          }}
+        >
+          {toast.type === "success" ? (
+            <CheckCircle size={16} style={{ color: "#22c55e", flexShrink: 0 }} />
+          ) : (
+            <AlertCircle size={16} style={{ color: "#ef4444", flexShrink: 0 }} />
+          )}
+          <p
+            className="font-sans text-[12px]"
+            style={{
+              color: "#FAF6EE",
+              fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+            }}
+          >
+            {toast.message}
+          </p>
+        </div>
+      )}
       <Link
         href="/admin/applications"
         className="inline-flex items-center gap-2 font-sans text-[12px] uppercase tracking-[2px] mb-6 hover:opacity-80 transition-opacity"
@@ -258,6 +338,24 @@ export default function AdminApplicationDetailPage() {
               <Field label="How Heard" value={app.how_heard} />
               <Field label="Additional Info" value={app.additional_info} />
             </Section>
+            {documents.length > 0 && (
+              <Section title="Uploaded Documents">
+                <div className="space-y-2">
+                  {documents.map((d) => (
+                    <a
+                      key={d.id}
+                      href={d.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block font-sans text-[13px] text-[#C9A84C] hover:underline"
+                      style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    >
+                      {DOC_TYPE_LABELS[d.document_type] ?? d.document_type} — {d.file_name ?? "Document"}
+                    </a>
+                  ))}
+                </div>
+              </Section>
+            )}
           </div>
         </div>
 
@@ -357,21 +455,38 @@ export default function AdminApplicationDetailPage() {
 
       {/* Confirm Approve modal */}
       {confirmAction === "approve" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setConfirmAction(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => !saving && setConfirmAction(null)}>
           <div
             className="max-w-md w-full mx-4 p-6 rounded"
             style={{ background: "#111111", border: "1px solid rgba(201,168,76,0.2)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="font-sans text-[14px] mb-6" style={{ color: "#FAF6EE", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
-              Are you sure you want to approve this application?
+            <h3
+              className="font-display text-[18px] mb-2"
+              style={{ color: "#FAF6EE", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}
+            >
+              Approve this application?
+            </h3>
+            <p
+              className="font-sans text-[13px] mb-6"
+              style={{
+                color: "rgba(250,246,238,0.7)",
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              This will create a CLGB member account for {app.full_name} and send them an email to set their password. This action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 type="button"
-                onClick={() => setConfirmAction(null)}
-                className="px-4 py-2 rounded border font-sans text-[12px]"
-                style={{ borderColor: "rgba(250,246,238,0.3)", color: "#FAF6EE", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                onClick={() => !saving && setConfirmAction(null)}
+                disabled={saving}
+                className="px-4 py-2 rounded border font-sans text-[12px] disabled:opacity-50"
+                style={{
+                  borderColor: "rgba(250,246,238,0.3)",
+                  color: "#FAF6EE",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
               >
                 Cancel
               </button>
@@ -379,10 +494,21 @@ export default function AdminApplicationDetailPage() {
                 type="button"
                 onClick={handleApprove}
                 disabled={saving}
-                className="px-4 py-2 rounded font-sans text-[12px] font-semibold"
-                style={{ backgroundColor: "#22c55e", color: "#050505", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                className="px-4 py-2 rounded font-sans text-[12px] font-semibold flex items-center gap-2 disabled:opacity-70"
+                style={{
+                  backgroundColor: "#22c55e",
+                  color: "#050505",
+                  fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                }}
               >
-                Confirm
+                {saving ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Creating account...
+                  </>
+                ) : (
+                  "Approve & Send Welcome Email"
+                )}
               </button>
             </div>
           </div>

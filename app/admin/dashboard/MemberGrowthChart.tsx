@@ -15,7 +15,7 @@ type ChartPoint = { month: string; count: number };
 export function MemberGrowthChart({ data }: { data: ChartPoint[] }) {
   return (
     <div className="h-[240px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={240}>
         <LineChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(201,168,76,0.1)" />
           <XAxis

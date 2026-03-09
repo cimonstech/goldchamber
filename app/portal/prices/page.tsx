@@ -148,7 +148,7 @@ export default function PortalPricesPage() {
           </div>
         </div>
         <div className="h-[320px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={320}>
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(201,168,76,0.1)" />
               <XAxis

@@ -70,7 +70,14 @@ export default function AdminLayout({
   const { theme, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [admin, setAdmin] = useState<{ full_name: string | null; email: string } | null>(null);
-  const [notificationCount] = useState(0);
+  const [pendingApplicationsCount, setPendingApplicationsCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/applications?counts=1")
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => data && setPendingApplicationsCount(data.pending ?? 0))
+      .catch(() => {});
+  }, [pathname]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -123,6 +130,7 @@ export default function AdminLayout({
       <nav className="flex-1">
         {NAV_ITEMS.map(({ icon: Icon, label, href }) => {
           const isActive = pathname === href || pathname?.startsWith(href + "/");
+          const showPendingBadge = href === "/admin/applications" && pendingApplicationsCount != null && pendingApplicationsCount > 0;
           return (
             <Link
               key={href}
@@ -143,6 +151,14 @@ export default function AdminLayout({
             >
               <Icon size={16} />
               {label}
+              {showPendingBadge && (
+                <span
+                  className="min-w-[20px] h-5 px-1.5 rounded-full flex items-center justify-center text-[9px] font-bold ml-auto"
+                  style={{ background: "rgba(234,179,8,0.3)", color: "#eab308" }}
+                >
+                  {pendingApplicationsCount}
+                </span>
+              )}
             </Link>
           );
         })}
@@ -265,22 +281,22 @@ export default function AdminLayout({
                 )}
               </span>
             </button>
-            <button
-              type="button"
+            <Link
+              href="/admin/applications"
               className="relative p-2"
               style={{ color: "var(--text-primary)" }}
               aria-label="Notifications"
             >
               <Bell size={18} />
-              {notificationCount > 0 && (
+              {pendingApplicationsCount != null && pendingApplicationsCount > 0 && (
                 <span
                   className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-bold"
-                  style={{ backgroundColor: "#ef4444", color: "#fff" }}
+                  style={{ backgroundColor: "#eab308", color: "#050505" }}
                 >
-                  {notificationCount}
+                  {pendingApplicationsCount}
                 </span>
               )}
-            </button>
+            </Link>
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
               style={{

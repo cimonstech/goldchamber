@@ -1,5 +1,10 @@
 # Add these to your .env.example (or .env.local)
 
+# Site URL — used for auth redirects (forgot-password, set-password after admin approval)
+# Production: https://goldchamber.vercel.app (or your custom domain)
+# Local: http://localhost:3000
+NEXT_PUBLIC_SITE_URL=https://goldchamber.vercel.app
+
 # Cloudflare R2 — media, documents, images (S3-compatible storage)
 # Create API token: Cloudflare Dashboard → R2 → Manage R2 API tokens
 # Account ID: Dashboard → Overview → right sidebar

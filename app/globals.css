@@ -226,6 +226,26 @@ canvas,
   color: var(--text-muted) !important;
 }
 
+/* Select dropdowns — ensure visible text, pointer cursor, dark options for contrast */
+.theme-form select,
+select.theme-input {
+  cursor: pointer;
+  min-height: 46px;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+}
+.theme-form select option,
+select.theme-input option {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+/* Light mode select options */
+[data-theme="light"] .theme-form select option,
+[data-theme="light"] select.theme-input option {
+  background-color: #faf8f3;
+  color: #0a0a0a;
+}
+
 [data-theme="light"] .border-2.border-gold,
 [data-theme="light"] a[class*="border"].border-gold,
 [data-theme="light"] button[class*="border"].border-gold {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { articles } from "@/lib/articles";
+import { getPublishedArticleBySlug, getPublishedArticles } from "@/lib/articles-db";
 import { ContactBanner } from "@/components/sections/ContactBanner";
 import { ArticleShareSidebar } from "@/components/newsroom/ArticleShareSidebar";
 import { MoreArticlesSection } from "@/components/newsroom/MoreArticlesSection";
@@ -11,12 +11,13 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chamberofgoldbuyer
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
+  const articles = await getPublishedArticles();
   return articles.map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
+  const article = await getPublishedArticleBySlug(slug);
   return {
     title: article ? `${article.title} — CLGB` : "Article — CLGB",
     description: article?.excerpt,
@@ -25,10 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsroomArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = articles.find((a) => a.slug === slug);
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) notFound();
 
-  const otherArticles = articles.filter((a) => a.slug !== slug);
+  const allArticles = await getPublishedArticles();
+  const otherArticles = allArticles.filter((a) => a.slug !== slug);
   const articleUrl = `${SITE_URL}/newsroom/${article.slug}`;
 
   return (

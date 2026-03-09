@@ -376,12 +376,12 @@ export default function GalleryPage() {
                     src={item.src}
                     alt={item.alt}
                     fill
-                    className="object-cover transition-transform duration-[600ms] group-hover:scale-[1.06]"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 <div
-                  className="absolute inset-0 bg-[rgba(5,5,5,0)] transition-colors duration-[400ms] group-hover:bg-[rgba(5,5,5,0.4)] z-[1]"
+                  className="absolute inset-0 bg-[rgba(5,5,5,0)] transition-colors duration-300 group-hover:bg-[rgba(5,5,5,0.4)] z-[1]"
                   aria-hidden
                 />
                 <span
@@ -395,7 +395,7 @@ export default function GalleryPage() {
                   {item.category}
                 </span>
                 <div
-                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(5,5,5,0.9)] to-transparent z-[2] p-5 pt-4 pb-4 translate-y-full transition-transform duration-[400ms] group-hover:translate-y-0"
+                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[rgba(5,5,5,0.9)] to-transparent z-[2] p-5 pt-4 pb-4 translate-y-full transition-transform duration-300 group-hover:translate-y-0"
                 >
                   <p
                     className="font-sans text-[11px] letter-spacing-[1px]"

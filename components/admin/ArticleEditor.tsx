@@ -277,7 +277,7 @@ export function ArticleEditor({ articleId, initialData }: ArticleEditorProps) {
                   setImageUrl(url);
                 } else {
                   const err = await res.json().catch(() => ({}));
-                  setError(err?.error ?? "Upload failed");
+                  setError(err?.error ?? "Upload failed. You can paste an image URL above instead.");
                 }
                 e.target.value = "";
               }}

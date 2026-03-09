@@ -11,6 +11,7 @@ import { Services } from "@/components/sections/Services";
 import { Membership } from "@/components/sections/Membership";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { NewsPreview } from "@/components/sections/NewsPreview";
+import type { ArticleForNewsroom } from "@/lib/articles-db";
 import { ContactBanner } from "@/components/sections/ContactBanner";
 
 const HERO_HEIGHT_VH = 300;
@@ -19,7 +20,7 @@ const HeroAnimation = dynamic(
   { ssr: false }
 );
 
-export function HomePageClient() {
+export function HomePageClient({ articles }: { articles: ArticleForNewsroom[] }) {
   const [showTicker, setShowTicker] = useState(false);
   const hasBeenInZoneRef = useRef(false);
 
@@ -58,7 +59,7 @@ export function HomePageClient() {
       <Services />
       <Membership />
       <WhyChooseUs />
-      <NewsPreview />
+      <NewsPreview articles={articles} />
       <ContactBanner />
     </>
   );

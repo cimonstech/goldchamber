@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Article } from "@/lib/articles";
+import type { ArticleForNewsroom } from "@/lib/articles-db";
 
-export function ArticleCard({ article }: { article: Article }) {
+export function ArticleCard({ article }: { article: ArticleForNewsroom }) {
   return (
     <Link
       href={`/newsroom/${article.slug}`}
@@ -17,7 +17,7 @@ export function ArticleCard({ article }: { article: Article }) {
           src={article.image}
           alt=""
           fill
-          className="object-cover transition-transform duration-[600ms] group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
         <div

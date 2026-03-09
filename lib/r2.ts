@@ -87,3 +87,21 @@ export function generateFileKey(prefix: string, filename: string): string {
   const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   return `${prefix}/${safeName}${ext ? `.${ext}` : ""}`;
 }
+
+/**
+ * Generate application document key: documents/{applicationId}/{docType}_{sanitizedName}.{ext}
+ */
+export function generateApplicationDocumentKey(
+  applicationId: string,
+  docType: string,
+  applicantName: string,
+  filename: string
+): string {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+  const safeName = applicantName
+    .replace(/[^a-zA-Z0-9-_]/g, "_")
+    .replace(/_+/g, "_")
+    .slice(0, 40);
+  const ts = Date.now();
+  return `documents/${applicationId}/${docType}_${safeName}_${ts}${ext ? `.${ext}` : ""}`;
+}

@@ -89,63 +89,48 @@ export default function AdminDashboardPage() {
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   useEffect(() => {
-    const supabase = createClient();
-
     async function fetchData() {
       setLoading(true);
       try {
-        // Active members count
-        const { count: activeCount } = await supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true })
-          .eq("membership_status", "active");
-        setStats((s) => ({ ...s, activeMembers: activeCount ?? 0 }));
+        // Use admin APIs for consistent data (bypasses RLS, same source as sidebar)
+        const [countsRes, appsRes, membersRes] = await Promise.all([
+          fetch("/api/admin/applications?counts=1"),
+          fetch("/api/admin/applications?recent=5"),
+          fetch("/api/admin/members?search=&tier=All+Tiers&status=All+Status&page=1&pageSize=25"),
+        ]);
 
-        // Pending applications count
-        const { count: pendingCount } = await supabase
-          .from("applications")
-          .select("*", { count: "exact", head: true })
-          .eq("status", "pending");
-        setStats((s) => ({ ...s, pendingApplications: pendingCount ?? 0 }));
+        const counts = countsRes.ok ? await countsRes.json() : {};
+        const appsData = appsRes.ok ? await appsRes.json() : {};
+        const membersData = membersRes.ok ? await membersRes.json() : {};
 
-        // Published articles count
+        const pendingCount = counts.pending ?? 0;
+        const applicationsList = (appsData.data ?? []) as Application[];
+        const membersList = (membersData.data ?? []) as Profile[];
+
+        const activeMembers = membersList.filter((m) => m.membership_status === "active");
+        const startOfMonth = new Date();
+        startOfMonth.setDate(1);
+        startOfMonth.setHours(0, 0, 0, 0);
+        const newThisMonth = activeMembers.filter((m) => new Date(m.created_at) >= startOfMonth).length;
+
+        // Published articles — still need Supabase (no admin API)
+        const supabase = createClient();
         const { count: articlesCount } = await supabase
           .from("articles")
           .select("*", { count: "exact", head: true })
           .eq("status", "published");
-        setStats((s) => ({ ...s, publishedArticles: articlesCount ?? 0 }));
 
-        // New members this month
-        const startOfMonth = new Date();
-        startOfMonth.setDate(1);
-        startOfMonth.setHours(0, 0, 0, 0);
-        const { count: newCount } = await supabase
-          .from("profiles")
-          .select("*", { count: "exact", head: true })
-          .eq("membership_status", "active")
-          .gte("created_at", startOfMonth.toISOString());
-        setStats((s) => ({ ...s, newThisMonth: newCount ?? 0 }));
+        setStats({
+          activeMembers: activeMembers.length,
+          pendingApplications: pendingCount,
+          publishedArticles: articlesCount ?? 0,
+          newThisMonth,
+        });
+        setApplications(applicationsList.slice(0, 5));
+        setMembers(activeMembers.slice(0, 8));
 
-        // Recent applications (last 5)
-        const { data: apps } = await supabase
-          .from("applications")
-          .select("id, full_name, membership_tier, submitted_at, status")
-          .order("submitted_at", { ascending: false })
-          .limit(5);
-        setApplications(apps ?? []);
-
-        // Recent members (last 8 active)
-        const { data: mems } = await supabase
-          .from("profiles")
-          .select("id, full_name, email, membership_tier, membership_status, created_at")
-          .eq("membership_status", "active")
-          .order("created_at", { ascending: false })
-          .limit(8);
-        setMembers(mems ?? []);
-
-        // Member growth chart — placeholder data for last 6 months
-        // TODO: Replace with real Supabase query for member count by month
-        const baseCount = activeCount ?? 100;
+        // Member growth chart — placeholder for last 6 months
+        const baseCount = activeMembers.length || 100;
         const months: { month: string; count: number }[] = [];
         for (let i = 5; i >= 0; i--) {
           const d = new Date();
@@ -160,7 +145,6 @@ export default function AdminDashboardPage() {
         setChartData(months);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
-        // Fallback placeholder data
         setChartData([
           { month: "Sep 24", count: 120 },
           { month: "Oct 24", count: 135 },
@@ -221,14 +205,14 @@ export default function AdminDashboardPage() {
               icon={Users}
               value={stats.activeMembers}
               label="Active Members"
-              trend="+12 this month"
+              trend={`+${stats.newThisMonth} this month`}
               trendPositive
             />
             <StatCard
               icon={ClipboardList}
               value={stats.pendingApplications}
               label="Pending Applications"
-              trend="Awaiting review"
+              trend={stats.pendingApplications > 0 ? "Awaiting review" : "All caught up"}
             />
             <StatCard
               icon={Newspaper}

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArticleCard } from "./ArticleCard";
-import type { Article } from "@/lib/articles";
+import type { ArticleForNewsroom } from "@/lib/articles-db";
 
 function useFadeUpStagger(count: number, threshold = 0.15, delay = 150) {
   const ref = useRef<HTMLDivElement>(null);
@@ -38,7 +38,7 @@ function useFadeUpStagger(count: number, threshold = 0.15, delay = 150) {
   return { ref, visible };
 }
 
-export function MoreArticlesSection({ articles }: { articles: Article[] }) {
+export function MoreArticlesSection({ articles }: { articles: ArticleForNewsroom[] }) {
   const grid = useFadeUpStagger(articles.length, 0.15, 150);
 
   return (

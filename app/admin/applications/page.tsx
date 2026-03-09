@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 type Application = {
@@ -31,41 +30,27 @@ export default function AdminApplicationsPage() {
   const [counts, setCounts] = useState({ pending: 0, reviewing: 0, resolved: 0 });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const supabase = createClient();
-
-    async function fetchCounts() {
-      const [p, r, a, rej] = await Promise.all([
-        supabase.from("applications").select("*", { count: "exact", head: true }).eq("status", "pending"),
-        supabase.from("applications").select("*", { count: "exact", head: true }).eq("status", "reviewing"),
-        supabase.from("applications").select("*", { count: "exact", head: true }).eq("status", "approved"),
-        supabase.from("applications").select("*", { count: "exact", head: true }).eq("status", "rejected"),
-      ]);
-      setCounts({
-        pending: p.count ?? 0,
-        reviewing: r.count ?? 0,
-        resolved: (a.count ?? 0) + (rej.count ?? 0),
-      });
+  const fetchCounts = useCallback(async () => {
+    const res = await fetch("/api/admin/applications?counts=1");
+    if (res.ok) {
+      const c = await res.json();
+      setCounts({ pending: c.pending ?? 0, reviewing: c.reviewing ?? 0, resolved: c.resolved ?? 0 });
     }
-    fetchCounts();
   }, []);
 
   useEffect(() => {
-    const supabase = createClient();
+    fetchCounts();
+  }, [fetchCounts]);
+
+  useEffect(() => {
     setLoading(true);
-    let q = supabase
-      .from("applications")
-      .select("id, full_name, email, submitted_at, membership_tier, gold_activity, status")
-      .order("submitted_at", { ascending: false });
-
-    if (tab === "pending") q = q.eq("status", "pending");
-    else if (tab === "reviewing") q = q.eq("status", "reviewing");
-    else q = q.in("status", ["approved", "rejected"]);
-
-    q.then(({ data }) => {
-      setApplications((data ?? []) as Application[]);
-      setLoading(false);
-    });
+    fetch(`/api/admin/applications?tab=${tab}`)
+      .then((res) => res.json())
+      .then((json) => {
+        setApplications((json.data ?? []) as Application[]);
+      })
+      .catch(() => setApplications([]))
+      .finally(() => setLoading(false));
   }, [tab]);
 
   const tabs: { key: Tab; label: string; count: number }[] = [
@@ -127,12 +112,20 @@ export default function AdminApplicationsPage() {
           ))}
         </div>
       ) : applications.length === 0 ? (
-        <p
-          className="font-sans text-[14px]"
-          style={{ color: "rgba(250,246,238,0.5)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
-        >
-          No applications in this category.
-        </p>
+        <div>
+          <p
+            className="font-sans text-[14px] mb-2"
+            style={{ color: "rgba(250,246,238,0.5)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+          >
+            No applications in this category.
+          </p>
+          <p
+            className="font-sans text-[12px]"
+            style={{ color: "rgba(250,246,238,0.35)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+          >
+            New membership form submissions appear here as &quot;Pending&quot;. Approved members appear under Members.
+          </p>
+        </div>
       ) : (
         <div className="space-y-3">
           {applications.map((app) => (

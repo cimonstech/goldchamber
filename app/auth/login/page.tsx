@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ const ERROR_MESSAGES: Record<LoginError, string> = {
   pending: "Your application is still under review.",
 };
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const successReset = searchParams.get("success") === "password-reset";
@@ -32,12 +32,23 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError("invalid");
+      return;
+    }
+    if (!password) {
+      setError("invalid");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const supabase = createClient();
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+        email: trimmedEmail,
         password,
       });
 
@@ -280,14 +291,29 @@ export default function LoginPage() {
         </button>
       </form>
       <p
-        className="text-center mt-6 font-sans text-[12px]"
-        style={{ color: "rgba(250,246,238,0.5)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+        className="text-center mt-6 font-sans text-[10px]"
+        style={{ color: "rgba(250,246,238,0.25)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
       >
-        Don&apos;t have an account?{" "}
-        <Link href="/auth/signup" className="text-[#C9A84C] hover:underline">
-          Sign up
+        CLGB membership is by application only.
+      </p>
+      <p
+        className="text-center mt-2 font-sans text-[10px]"
+        style={{ color: "rgba(250,246,238,0.25)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+      >
+        Apply at the{" "}
+        <Link href="/membership" className="text-[#C9A84C] hover:underline">
+          Membership page
         </Link>
+        .
       </p>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-[440px] rounded-[4px] p-12 animate-pulse bg-[rgba(201,168,76,0.04)] border border-[rgba(201,168,76,0.2)]" />}>
+      <LoginForm />
+    </Suspense>
   );
 }

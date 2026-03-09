@@ -3,35 +3,9 @@
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import type { ArticleForNewsroom } from "@/lib/articles-db";
 
-const articles = [
-  {
-    slug: "press-release-oct-2025",
-    title: "Press Release — 23rd October 2025",
-    excerpt: "The latest official communication from the Chamber of Licensed Gold Buyers.",
-    date: "23 Oct 2025",
-    category: "Press Release",
-    image: "/gold-bars.jpg",
-  },
-  {
-    slug: "goldbod-receipts-enforcement",
-    title: "GoldBod Begins Reinforcement of GoldBod Receipts",
-    excerpt: "The Ghana Gold Board has begun enforcing the mandatory use of GoldBod receipts by all licensed gold buyers.",
-    date: "Oct 2025",
-    category: "Regulatory",
-    image: "/gold-bars2.jpg",
-  },
-  {
-    slug: "june-21-deadline",
-    title: "No More Extensions After June 21 Deadline",
-    excerpt: "GoldBod has issued a final warning to unlicensed traders following the June 21 licensing deadline.",
-    date: "Jun 2025",
-    category: "Industry News",
-    image: "/goldbars3.jpeg",
-  },
-];
-
-export function NewsPreview() {
+export function NewsPreview({ articles }: { articles: ArticleForNewsroom[] }) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -72,7 +46,7 @@ export function NewsPreview() {
           </Link>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          {articles.map((article) => (
+          {articles.slice(0, 3).map((article) => (
             <Link
               key={article.slug}
               href={`/newsroom/${article.slug}`}

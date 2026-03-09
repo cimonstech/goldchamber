@@ -436,7 +436,7 @@ export default function FAQsPage() {
                         />
                       </button>
                       <div
-                        className="overflow-hidden transition-[max-height] duration-[400ms] ease-out"
+                        className="overflow-hidden transition-[max-height] duration-300 ease-out"
                         style={{ maxHeight: isOpen ? 500 : 0 }}
                       >
                         <div className="pb-6">

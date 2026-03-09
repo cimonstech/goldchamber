@@ -77,8 +77,11 @@ export default function MembershipPage() {
   const [heroTitleVisible, setHeroTitleVisible] = useState(false);
   const [heroSubtitleVisible, setHeroSubtitleVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState("");
 
+  const [hasBusiness, setHasBusiness] = useState(false);
+  const [documents, setDocuments] = useState<{ type: string; file: File }[]>([]);
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -117,37 +120,108 @@ export default function MembershipPage() {
     setValidationError("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError("");
 
-    const required = [
+    // Personal info — always required
+    const personalRequired = [
       form.fullName,
       form.email,
       form.phone,
       form.dateOfBirth,
       form.nationality,
       form.residentialAddress,
+    ];
+    const personalFilled = personalRequired.every((v) => v && String(v).trim() !== "");
+
+    // Business info — required only if hasBusiness
+    const businessFilled = !hasBusiness || [
       form.businessName,
       form.businessRegistrationNumber,
       form.yearsInOperation,
       form.businessAddress,
-      form.typeOfGoldActivity,
-      form.membershipTier,
-      form.howDidYouHear,
-    ];
-    const allFilled = required.every((v) => v && String(v).trim() !== "");
+    ].every((v) => v && String(v).trim() !== "");
+
+    // Membership selection — always required
+    const selectionFilled = form.typeOfGoldActivity && form.membershipTier && form.howDidYouHear;
     const allDeclarations = form.declaration1 && form.declaration2 && form.declaration3;
 
-    if (!allFilled || !allDeclarations) {
-      setValidationError(
-        "Please complete all required fields and accept the declarations."
-      );
+    if (!personalFilled) {
+      setValidationError("Please complete all personal information fields.");
+      return;
+    }
+    if (!businessFilled) {
+      setValidationError("Please complete all business information fields.");
+      return;
+    }
+    if (!selectionFilled) {
+      setValidationError("Please select your membership tier, gold activity type, and how you heard about us.");
+      return;
+    }
+    if (!allDeclarations) {
+      setValidationError("Please accept all three declarations.");
       return;
     }
 
-    // TODO: Connect to backend API route — POST /api/membership-application
-    setSubmitted(true);
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email.trim())) {
+      setValidationError("Please enter a valid email address.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload: Record<string, string | null> = {
+        fullName: form.fullName.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        dateOfBirth: form.dateOfBirth || null,
+        nationality: form.nationality.trim(),
+        residentialAddress: form.residentialAddress.trim(),
+        businessName: hasBusiness ? form.businessName.trim() : null,
+        businessRegistration: hasBusiness ? form.businessRegistrationNumber.trim() : null,
+        businessAddress: hasBusiness ? form.businessAddress.trim() : null,
+        yearsInOperation: hasBusiness ? form.yearsInOperation : null,
+        goldActivity: form.typeOfGoldActivity,
+        membershipTier: form.membershipTier,
+        howHeard: form.howDidYouHear,
+        additionalInfo: form.additionalInfo?.trim() || null,
+      };
+
+      let res: Response;
+      if (documents.length > 0) {
+        const formData = new FormData();
+        Object.entries(payload).forEach(([k, v]) => formData.append(k, v ?? ""));
+        documents.forEach((d, i) => {
+          formData.append(`document${i}`, d.file);
+          formData.append(`document${i}Type`, d.type);
+        });
+        res = await fetch("/api/applications/submit", { method: "POST", body: formData });
+      } else {
+        res = await fetch("/api/applications/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      }
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 409) {
+          setValidationError(data.error ?? "An application with this email already exists.");
+        } else {
+          setValidationError(data.error ?? "Something went wrong. Please try again.");
+        }
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setValidationError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -580,8 +654,7 @@ export default function MembershipPage() {
                     "var(--font-montserrat), Montserrat, sans-serif",
                 }}
               >
-                Thank you for applying. A member of our team will be in touch
-                within 48 hours.
+                Thank you for applying. Our team will review your application and contact you within 48 hours. If approved, you will receive an email with instructions to set up your account.
               </p>
             </div>
           ) : (
@@ -737,7 +810,7 @@ export default function MembershipPage() {
                 </div>
               </div>
 
-              {/* Group 2 — BUSINESS INFORMATION */}
+              {/* Group 2 — BUSINESS INFORMATION (optional) */}
               <div className="mb-10">
                 <div
                   className="font-sans text-[10px] uppercase tracking-[2px] mb-6"
@@ -750,105 +823,122 @@ export default function MembershipPage() {
                   BUSINESS INFORMATION
                 </div>
                 <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
-                <div className="mb-7">
-                  <label
-                    className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
-                    style={{
-                      color: "rgba(250,246,238,0.6)",
-                      fontFamily:
-                        "var(--font-montserrat), Montserrat, sans-serif",
-                    }}
-                  >
-                    Business / Company Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.businessName}
-                    onChange={(e) =>
-                      updateForm("businessName", e.target.value)
-                    }
-                    className={inputBase}
-                    placeholder="Your business or company name"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-7">
-                  <div>
-                    <label
-                      className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
-                      style={{
-                        color: "rgba(250,246,238,0.6)",
-                        fontFamily:
-                          "var(--font-montserrat), Montserrat, sans-serif",
-                      }}
-                    >
-                      Business Registration Number
-                    </label>
+                <label className="flex gap-3 items-start mb-6 cursor-pointer">
+                  <span className="relative flex-shrink-0 mt-0.5 inline-flex">
                     <input
-                      type="text"
-                      required
-                      value={form.businessRegistrationNumber}
-                      onChange={(e) =>
-                        updateForm(
-                          "businessRegistrationNumber",
-                          e.target.value
-                        )
-                      }
-                      className={inputBase}
-                      placeholder="Registration number"
+                      type="checkbox"
+                      checked={hasBusiness}
+                      onChange={(e) => setHasBusiness(e.target.checked)}
+                      className="sr-only peer"
                     />
-                  </div>
-                  <div>
-                    <label
-                      className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
-                      style={{
-                        color: "rgba(250,246,238,0.6)",
-                        fontFamily:
-                          "var(--font-montserrat), Montserrat, sans-serif",
-                      }}
+                    <span
+                      className="block w-4 h-4 border rounded-[2px] transition-all duration-200 peer-checked:bg-[var(--gold-primary)] peer-checked:border-[var(--gold-primary)]"
+                      style={{ borderColor: "var(--input-border)" }}
+                    />
+                    <svg
+                      className="absolute inset-0 m-auto w-2.5 h-2.5 text-[#FAF6EE] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden
                     >
-                      Years in Operation
-                    </label>
-                    <select
-                      required
-                      value={form.yearsInOperation}
-                      onChange={(e) =>
-                        updateForm("yearsInOperation", e.target.value)
-                      }
-                      className={inputBase}
-                    >
-                      <option value="">Select</option>
-                      <option value="Less than 1 year">Less than 1 year</option>
-                      <option value="1–3 years">1–3 years</option>
-                      <option value="3–5 years">3–5 years</option>
-                      <option value="5–10 years">5–10 years</option>
-                      <option value="10+ years">10+ years</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mb-7">
-                  <label
-                    className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                  <span
+                    className="font-sans text-[13px] font-light"
                     style={{
-                      color: "rgba(250,246,238,0.6)",
-                      fontFamily:
-                        "var(--font-montserrat), Montserrat, sans-serif",
+                      color: "rgba(250,246,238,0.65)",
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
                     }}
                   >
-                    Business Address
-                  </label>
-                  <textarea
-                    required
-                    rows={2}
-                    value={form.businessAddress}
-                    onChange={(e) =>
-                      updateForm("businessAddress", e.target.value)
-                    }
-                    className={`${inputBase} resize-none`}
-                    placeholder="Your business address"
-                  />
-                </div>
-                <div className="mb-7">
+                    I have a business or company
+                  </span>
+                </label>
+                {hasBusiness && (
+                  <div className="space-y-7 animate-in fade-in duration-200">
+                    <div>
+                      <label
+                        className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
+                        style={{
+                          color: "rgba(250,246,238,0.6)",
+                          fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                        }}
+                      >
+                        Business / Company Name
+                      </label>
+                      <input
+                        type="text"
+                        value={form.businessName}
+                        onChange={(e) => updateForm("businessName", e.target.value)}
+                        className={inputBase}
+                        placeholder="Your business or company name"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
+                          style={{
+                            color: "rgba(250,246,238,0.6)",
+                            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                          }}
+                        >
+                          Business Registration Number
+                        </label>
+                        <input
+                          type="text"
+                          value={form.businessRegistrationNumber}
+                          onChange={(e) => updateForm("businessRegistrationNumber", e.target.value)}
+                          className={inputBase}
+                          placeholder="Registration number"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
+                          style={{
+                            color: "rgba(250,246,238,0.6)",
+                            fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                          }}
+                        >
+                          Years in Operation
+                        </label>
+                        <select
+                          value={form.yearsInOperation}
+                          onChange={(e) => updateForm("yearsInOperation", e.target.value)}
+                          className={inputBase}
+                        >
+                          <option value="">Select</option>
+                          <option value="Less than 1 year">Less than 1 year</option>
+                          <option value="1–3 years">1–3 years</option>
+                          <option value="3–5 years">3–5 years</option>
+                          <option value="5–10 years">5–10 years</option>
+                          <option value="10+ years">10+ years</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
+                        style={{
+                          color: "rgba(250,246,238,0.6)",
+                          fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                        }}
+                      >
+                        Business Address
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={form.businessAddress}
+                        onChange={(e) => updateForm("businessAddress", e.target.value)}
+                        className={`${inputBase} resize-none`}
+                        placeholder="Your business address"
+                      />
+                    </div>
+                  </div>
+                )}
+                <div className="mb-7 mt-7">
                   <label
                     className="block font-sans text-[10px] uppercase tracking-[2px] mb-2"
                     style={{
@@ -860,7 +950,6 @@ export default function MembershipPage() {
                     Type of Gold Activity
                   </label>
                   <select
-                    required
                     value={form.typeOfGoldActivity}
                     onChange={(e) =>
                       updateForm("typeOfGoldActivity", e.target.value)
@@ -1042,6 +1131,103 @@ export default function MembershipPage() {
                 ))}
               </div>
 
+              {/* Group 5 — DOCUMENTS (optional) */}
+              <div className="mb-10">
+                <div
+                  className="font-sans text-[10px] uppercase tracking-[2px] mb-6"
+                  style={{
+                    color: "rgba(250,246,238,0.6)",
+                    fontFamily:
+                      "var(--font-montserrat), Montserrat, sans-serif",
+                  }}
+                >
+                  DOCUMENTS (OPTIONAL)
+                </div>
+                <div className="w-full h-px mb-6" style={{ backgroundColor: "var(--rule-color)" }} />
+                <p
+                  className="font-sans text-[12px] mb-4"
+                  style={{
+                    color: "rgba(250,246,238,0.6)",
+                    fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                  }}
+                >
+                  Upload supporting documents (Ghana Card, Registration Certificate, etc.). PDF, JPEG, PNG or WebP. Max 10MB each.
+                </p>
+                {documents.map((d, i) => (
+                  <div key={i} className="flex flex-wrap items-center gap-3 mb-4">
+                    <select
+                      value={d.type}
+                      onChange={(e) =>
+                        setDocuments((prev) => {
+                          const next = [...prev];
+                          next[i] = { ...next[i]!, type: e.target.value };
+                          return next;
+                        })
+                      }
+                      className={`${inputBase} flex-1 min-w-[180px]`}
+                    >
+                      <option value="ghana_card">Ghana Card</option>
+                      <option value="reg_certificate">Registration Certificate</option>
+                      <option value="business_registration">Business Registration</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <span
+                      className="font-sans text-[12px] truncate max-w-[140px]"
+                      style={{ color: "rgba(250,246,238,0.7)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    >
+                      {d.file.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setDocuments((prev) => prev.filter((_, j) => j !== i))}
+                      className="font-sans text-[11px] uppercase text-[#ef4444] hover:underline"
+                      style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+                <div className="flex flex-wrap gap-3">
+                  <select
+                    id="new-doc-type"
+                    defaultValue="ghana_card"
+                    className={`${inputBase} w-auto min-w-[180px]`}
+                  >
+                    <option value="ghana_card">Ghana Card</option>
+                    <option value="reg_certificate">Registration Certificate</option>
+                    <option value="business_registration">Business Registration</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <label
+                    className="inline-flex items-center gap-2 px-4 py-3 rounded border cursor-pointer transition-colors hover:bg-[rgba(201,168,76,0.08)]"
+                    style={{
+                      borderColor: "var(--gold-primary)",
+                      color: "var(--gold-primary)",
+                      fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+                      fontSize: 12,
+                    }}
+                  >
+                    <input
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        if (file.size > 10 * 1024 * 1024) {
+                          setValidationError("File must be under 10MB.");
+                          return;
+                        }
+                        const typeSelect = document.getElementById("new-doc-type") as HTMLSelectElement;
+                        setDocuments((prev) => [...prev, { type: typeSelect?.value ?? "other", file }]);
+                        e.target.value = "";
+                      }}
+                    />
+                    + Add Document
+                  </label>
+                </div>
+              </div>
+
               {validationError && (
                 <p
                   className="font-sans text-[12px] mb-4"
@@ -1057,7 +1243,8 @@ export default function MembershipPage() {
 
               <button
                 type="submit"
-                className="w-full py-[18px] font-sans text-[11px] uppercase tracking-[3px] font-bold text-[#050505] rounded-[2px] cursor-pointer transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(201,168,76,0.3)] mt-10"
+                disabled={submitting}
+                className="w-full py-[18px] font-sans text-[11px] uppercase tracking-[3px] font-bold text-[#050505] rounded-[2px] cursor-pointer transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(201,168,76,0.3)] mt-10 disabled:opacity-70 disabled:cursor-not-allowed"
                 style={{
                   background: "linear-gradient(135deg, #C9A84C, #8B6914)",
                   border: "none",
@@ -1065,7 +1252,7 @@ export default function MembershipPage() {
                     "var(--font-montserrat), Montserrat, sans-serif",
                 }}
               >
-                Submit Application
+                {submitting ? "Submitting..." : "Submit Application"}
               </button>
             </form>
           )}
