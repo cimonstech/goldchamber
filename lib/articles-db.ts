@@ -42,6 +42,7 @@ function formatDate(iso: string | null): { date: string; month: string; year: st
 
 export async function getPublishedArticles(): Promise<ArticleForNewsroom[]> {
   const supabase = createPublicSupabaseClient();
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from("articles")
     .select("id, slug, title, excerpt, body, category, image_url, featured, published_at")
@@ -71,6 +72,7 @@ export async function getPublishedArticles(): Promise<ArticleForNewsroom[]> {
 
 export async function getPublishedArticleBySlug(slug: string): Promise<ArticleForNewsroom | null> {
   const supabase = createPublicSupabaseClient();
+  if (!supabase) return null;
   const { data, error } = await supabase
     .from("articles")
     .select("id, slug, title, excerpt, body, category, image_url, featured, published_at")
