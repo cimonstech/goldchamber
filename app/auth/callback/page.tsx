@@ -4,13 +4,13 @@
  * Auth callback — handles invite/magic link redirect from Supabase.
  * Processes code (PKCE) or hash (implicit), then redirects to set-password.
  */
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
@@ -109,5 +109,43 @@ export default function AuthCallbackPage() {
         </span>
       </div>
     </div>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="w-full max-w-[440px] rounded-[4px] p-12 mx-auto"
+          style={{
+            background: "rgba(201,168,76,0.04)",
+            border: "1px solid rgba(201,168,76,0.2)",
+          }}
+        >
+          <Image
+            src="/primarylogo-white.png"
+            alt="CLGB"
+            width={140}
+            height={40}
+            className="block mx-auto mb-8"
+          />
+          <div className="flex items-center justify-center gap-3 py-12">
+            <Loader2 size={24} className="animate-spin" style={{ color: "#C9A84C" }} />
+            <span
+              className="font-sans text-[14px]"
+              style={{
+                color: "rgba(250,246,238,0.7)",
+                fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
+              }}
+            >
+              Verifying...
+            </span>
+          </div>
+        </div>
+      }
+    >
+      <AuthCallbackContent />
+    </Suspense>
   );
 }
