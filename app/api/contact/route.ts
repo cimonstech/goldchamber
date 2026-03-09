@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "Chamber of Gold Buyers <onboarding@resend.dev>";
-const TO_EMAIL = process.env.RESEND_TO_EMAIL ?? "info@chamberofgoldbuyers.com";
+const TO_EMAIL = process.env.RESEND_TO_EMAIL ?? "business@chamberofgoldbuyers.com";
 
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;

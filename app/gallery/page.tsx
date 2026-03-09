@@ -511,8 +511,8 @@ export default function GalleryPage() {
       <section
         ref={submitSection.ref}
         className="theme-bg-secondary py-20 px-[60px] max-md:px-6 border-t transition-all duration-700 ease-out"
-        style={{ borderColor: "var(--border-subtle)" }}
         style={{
+          borderColor: "var(--border-subtle)",
           opacity: submitSection.visible ? 1 : 0,
           transform: submitSection.visible ? "translateY(0)" : "translateY(40px)",
         }}
@@ -556,8 +556,9 @@ export default function GalleryPage() {
           <Link
             href="/contact"
             className="gold-outline-btn inline-block border bg-transparent py-3 px-8 font-sans text-[10px] uppercase tracking-[2px] transition-all duration-300"
-            style={{ borderColor: "var(--gold-primary)", color: "var(--gold-primary)" }}
             style={{
+              borderColor: "var(--gold-primary)",
+              color: "var(--gold-primary)",
               fontFamily: "var(--font-montserrat), Montserrat, sans-serif",
             }}
           >

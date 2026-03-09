@@ -31,7 +31,7 @@ const SUBJECT_OPTIONS = [
 
 const CONTACT_ITEMS = [
   { icon: Phone, label: "PHONE", value: "+233 266 10 9898" },
-  { icon: Mail, label: "EMAIL", value: "info@chamberofgoldbuyers.com" },
+  { icon: Mail, label: "EMAIL", value: "business@chamberofgoldbuyers.com" },
   { icon: MapPin, label: "DIGITAL ADDRESS", value: "AK-009-2554" },
   { icon: Clock, label: "RESPONSE TIME", value: "Within 48 hours" },
 ] as const;

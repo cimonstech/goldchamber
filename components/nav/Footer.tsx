@@ -78,8 +78,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:info@chamberofgoldbuyers.com" className="hover:text-gold transition-colors">
-                  info@chamberofgoldbuyers.com
+                <a href="mailto:business@chamberofgoldbuyers.com" className="hover:text-gold transition-colors">
+                  business@chamberofgoldbuyers.com
                 </a>
               </li>
             </ul>

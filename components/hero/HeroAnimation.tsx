@@ -26,7 +26,7 @@ export function HeroAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cacheRef = useRef<Map<number, HTMLImageElement>>(new Map());
   const cacheOrderRef = useRef<number[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
   const rafRef = useRef<number>();
   const lastFrameRef = useRef(-1);
@@ -173,19 +173,6 @@ export function HeroAnimation() {
 
   return (
     <>
-      {!loaded && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-dark">
-          <div className="w-64 h-1 bg-dark-3 rounded-full overflow-hidden mb-4">
-            <div
-              className="h-full bg-gold transition-all duration-300 ease-out"
-              style={{ width: `${loadProgress}%` }}
-            />
-          </div>
-          <p className="font-sans text-sm text-cream/70 uppercase tracking-wider">
-            Loading experience...
-          </p>
-        </div>
-      )}
       <canvas
         ref={canvasRef}
         className="fixed top-0 left-0 w-full h-screen object-cover pointer-events-none transition-opacity duration-150"

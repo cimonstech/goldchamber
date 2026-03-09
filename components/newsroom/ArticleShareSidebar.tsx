@@ -23,7 +23,6 @@ export function ArticleShareSidebar({ url, title }: { url: string; title: string
         <p
           className="font-sans text-[10px] uppercase tracking-[4px] mb-4"
           style={{ color: "var(--gold-primary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
-          style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
         >
           SHARE
         </p>

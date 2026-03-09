@@ -28,7 +28,7 @@ export function HeroContent() {
 
   return (
     <div
-      className="fixed inset-0 flex flex-col items-center justify-center px-4 sm:px-6 z-[2] pointer-events-none"
+      className="fixed inset-0 flex flex-col items-center justify-center px-4 sm:px-6 z-[2] pointer-events-none pt-20 md:pt-0"
       style={{ opacity }}
     >
       <div className="pointer-events-auto flex flex-col items-center text-center max-w-4xl mx-auto">

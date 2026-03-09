@@ -69,7 +69,9 @@ export default function RootLayout({
         <ThemeProvider>
           <ParticleBackgroundWrapper />
           <div className="sticky top-0 z-50">
-            <GoldPriceBar />
+            <div className="hidden md:block">
+              <GoldPriceBar />
+            </div>
             <Navbar />
           </div>
           <main className="relative z-10">{children}</main>

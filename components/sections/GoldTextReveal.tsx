@@ -138,19 +138,19 @@ export function GoldTextReveal() {
           .gold-card-2 { right: 4%; top: 35%; transform: rotate(4deg); }
           .gold-card-3-desktop { top: auto; bottom: -80px; left: 50%; transform: translateX(-50%) rotate(-2deg); }
           @media (max-width: 767px) {
-            .gold-card-1 { top: 15%; transform: translateY(0) rotate(-1.5deg); }
-            .gold-card-2 { top: 15%; transform: rotate(2deg); }
+            .gold-card-1, .gold-card-2 { position: static !important; transform: none !important; left: auto !important; right: auto !important; top: auto !important; }
+            .gold-title-mobile { background: linear-gradient(135deg, #6B4A0A 0%, #8B6914 35%, #A67C1A 65%, #8B6914 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
           }
         `,
       }} />
       <div className="min-h-[100vh] flex flex-col items-center justify-center px-6 py-16">
         <div
-          className="relative w-full max-w-[1400px] mx-auto md:pb-[180px]"
+          className="relative w-full max-w-[1400px] mx-auto md:pb-[180px] flex flex-col items-center gap-6 md:block md:gap-0"
           style={{ margin: "0 auto" }}
         >
           {/* Text block — IntersectionObserver fade-up */}
           <div
-            className="flex flex-col items-center justify-center text-center transition-none"
+            className="flex flex-col items-center justify-center text-center transition-none w-full"
             style={{
               opacity: sectionVisible ? 1 : 0,
               transform: sectionVisible ? "translateY(0)" : "translateY(20px)",
@@ -158,7 +158,7 @@ export function GoldTextReveal() {
             }}
           >
             <div
-              className="text-[clamp(24px,3.5vw,48px)]"
+              className="gold-title-mobile text-[clamp(31px,4.5vw,48px)] md:text-[clamp(24px,3.5vw,48px)]"
               style={{
                 fontFamily: "var(--font-cormorant), Cormorant Garamond, serif",
                 fontWeight: 300,
@@ -206,7 +206,7 @@ export function GoldTextReveal() {
             </div>
             <Link
               href="/membership"
-              className="relative z-[20] font-sans text-[10px] font-bold uppercase tracking-[3px] py-3.5 px-9 rounded-sm cursor-pointer transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,0.35)] inline-block"
+              className="relative z-[20] font-sans text-[10px] font-bold uppercase tracking-[3px] py-3.5 px-9 rounded-sm cursor-pointer transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,0.35)] inline-block whitespace-nowrap"
               style={{
                 marginTop: 28,
                 marginBottom: 40,
@@ -218,11 +218,41 @@ export function GoldTextReveal() {
             >
               Apply for Membership
             </Link>
+          </div>
 
-            {/* Card 3 — mobile: static, in flow after button */}
-            <div className="md:hidden pointer-events-none" style={{ marginTop: 32 }}>
-              {sectionVisible && (
-                <div className="gold-float-3 will-change-transform scale-[0.85] p-4 px-5" style={CARD_STYLE}>
+          {/* Cards 1 & 2 — absolute */}
+          {sectionVisible && (
+            <>
+              <div className="absolute gold-card-1 pointer-events-none w-full max-w-[240px] md:w-auto md:max-w-none">
+                <div className="gold-float-1 will-change-transform p-4 px-5 md:py-6 md:px-7 md:scale-100" style={CARD_STYLE}>
+                  <Users size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
+                  <div className="absolute top-3 right-3 w-3 h-3" style={{ background: "var(--gold-highlight)", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }} />
+                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
+                    {memberCount}{memberCount >= 500 ? "+" : ""}
+                  </div>
+                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>ACTIVE MEMBERS</div>
+                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>CLGB CERTIFIED</div>
+                </div>
+              </div>
+              <div className="absolute gold-card-2 pointer-events-none w-full max-w-[240px] md:w-auto md:max-w-none">
+                <div className="gold-float-2 will-change-transform p-4 px-5 md:py-6 md:px-7 md:scale-100" style={CARD_STYLE}>
+                  <BarChart2 size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
+                  <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-[#4ade80]" style={{ boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
+                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
+                    {goldPrice != null ? `GHS ${goldPrice.toLocaleString("en-GH", { minimumFractionDigits: 2 })}` : "---"}
+                  </div>
+                  <div style={{ marginTop: 12 }}>
+                    <MiniLineChart visible={sectionVisible} pathD={pathD} fillPathD={fillPathD} />
+                  </div>
+                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
+                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>GOLD · 24K</div>
+                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>PER TROY OZ</div>
+                </div>
+              </div>
+              {/* Card 3 — mobile: stacked in flow */}
+              <div className="md:hidden pointer-events-none w-full max-w-[240px]">
+                <div className="gold-float-3 will-change-transform p-4 px-5 relative" style={CARD_STYLE}>
                   <Award size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
                   <div className="flex items-center gap-4 pl-6">
                     <div className="relative shrink-0">
@@ -238,39 +268,6 @@ export function GoldTextReveal() {
                       <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>LONDON GOOD DELIVERY</div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Cards 1 & 2 — absolute */}
-          {sectionVisible && (
-            <>
-              <div className="absolute gold-card-1 pointer-events-none">
-                <div className="gold-float-1 will-change-transform scale-[0.85] md:scale-100 p-4 px-5 md:py-6 md:px-7" style={CARD_STYLE}>
-                  <Users size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
-                  <div className="absolute top-3 right-3 w-3 h-3" style={{ background: "var(--gold-highlight)", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }} />
-                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
-                    {memberCount}{memberCount >= 500 ? "+" : ""}
-                  </div>
-                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
-                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>ACTIVE MEMBERS</div>
-                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>CLGB CERTIFIED</div>
-                </div>
-              </div>
-              <div className="absolute gold-card-2 pointer-events-none">
-                <div className="gold-float-2 will-change-transform scale-[0.85] md:scale-100 p-4 px-5 md:py-6 md:px-7" style={CARD_STYLE}>
-                  <BarChart2 size={14} className="absolute top-3 left-3" style={{ color: "var(--text-label)" }} />
-                  <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-[#4ade80]" style={{ boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
-                  <div className="font-display font-semibold text-[28px] md:text-[42px] pl-6" style={{ color: "var(--gold-primary)", fontFamily: "var(--font-cormorant), Cormorant Garamond, serif" }}>
-                    {goldPrice != null ? `GHS ${goldPrice.toLocaleString("en-GH", { minimumFractionDigits: 2 })}` : "---"}
-                  </div>
-                  <div style={{ marginTop: 12 }}>
-                    <MiniLineChart visible={sectionVisible} pathD={pathD} fillPathD={fillPathD} />
-                  </div>
-                  <div className="h-px my-2" style={{ background: "var(--input-border)" }} />
-                  <div className="font-sans text-[9px] uppercase tracking-[3px]" style={{ color: "var(--text-secondary)" }}>GOLD · 24K</div>
-                  <div className="font-sans text-[8px] uppercase tracking-[2px] mt-0.5" style={{ color: "var(--text-label)" }}>PER TROY OZ</div>
                 </div>
               </div>
               {/* Card 3 — desktop: absolute below button */}

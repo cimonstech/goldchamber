@@ -57,7 +57,7 @@ const faqs: FAQ[] = [
     category: "Membership",
     question: "Is there a membership fee?",
     answer:
-      "Membership fee details are provided directly to applicants upon review of their application. Fees vary by tier and are structured to reflect the level of benefits and support provided. Contact us at info@chamberofgoldbuyers.com for current fee information.",
+      "Membership fee details are provided directly to applicants upon review of their application. Fees vary by tier and are structured to reflect the level of benefits and support provided. Contact us at business@chamberofgoldbuyers.com for current fee information.",
   },
   {
     id: "what-is-gold-trading",
@@ -134,7 +134,7 @@ const faqs: FAQ[] = [
     category: "General",
     question: "How do I contact CLGB?",
     answer:
-      "You can reach us by phone at +233 266 10 9898, by email at info@chamberofgoldbuyers.com, or by completing the contact form on our Contact page. Our digital address is AK-009-2554. We are based in Kumasi, Ghana, and our team responds to all enquiries within 48 hours.",
+      "You can reach us by phone at +233 266 10 9898, by email at business@chamberofgoldbuyers.com, or by completing the contact form on our Contact page. Our digital address is AK-009-2554. We are based in Kumasi, Ghana, and our team responds to all enquiries within 48 hours.",
   },
   {
     id: "response-time",
