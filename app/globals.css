@@ -110,6 +110,16 @@ canvas,
   color: #A07820;
 }
 
+/* Dashboard form inputs — theme-aware */
+.input-dashboard {
+  background: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+.input-dashboard::placeholder {
+  color: var(--text-muted) !important;
+}
+
 .footer-section {
   background: var(--bg-secondary);
   --footer-text: #FAF6EE;

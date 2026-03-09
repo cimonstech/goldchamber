@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -26,11 +27,46 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const setUserFromAuth = (u: { id: string; email?: string } | null) => {
+    setUser(u ? { id: u.id, email: u.email ?? "" } : null);
+  };
+  const [profile, setProfile] = useState<{ role: string } | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user: u } }) => {
+      setUserFromAuth(u ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserFromAuth(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    const supabase = createClient();
+    supabase.from("profiles").select("role").eq("id", user.id).single().then(({ data }) => setProfile(data));
+  }, [user]);
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUserMenuOpen(false);
+    setMobileOpen(false);
+    router.refresh();
+  };
 
   const isHome = pathname === "/";
   useEffect(() => {
@@ -136,6 +172,70 @@ export function Navbar() {
               )
             )}
           </div>
+
+          {/* User menu (logged in) or Login link */}
+          {user ? (
+            <div className="relative hidden lg:block">
+              <button
+                type="button"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="p-2 rounded-full transition-colors hover:bg-[rgba(201,168,76,0.1)]"
+                style={{ color: isTransparent ? "#fff" : "var(--gold-primary)" }}
+                aria-label="Account menu"
+                aria-expanded={userMenuOpen}
+              >
+                <User size={20} />
+              </button>
+              {userMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setUserMenuOpen(false)}
+                    aria-hidden
+                  />
+                  <div
+                    className="absolute right-0 top-full mt-2 z-50 py-2 rounded shadow-xl min-w-[180px]"
+                    style={{
+                      backgroundColor: "var(--bg-primary)",
+                      border: "1px solid var(--border-gold)",
+                    }}
+                  >
+                    <div className="px-4 py-2 border-b" style={{ borderColor: "var(--border-subtle)" }}>
+                      <p className="font-sans text-[11px] truncate" style={{ color: "var(--text-muted)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
+                        {user.email}
+                      </p>
+                    </div>
+                    <Link
+                      href={profile?.role === "admin" ? "/admin/dashboard" : "/portal/dashboard"}
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 font-sans text-[11px] uppercase tracking-wider hover:bg-[rgba(201,168,76,0.08)]"
+                      style={{ color: "var(--text-primary)", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    >
+                      <User size={14} />
+                      {profile?.role === "admin" ? "Admin Dashboard" : "Member Portal"}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-4 py-2.5 font-sans text-[11px] uppercase tracking-wider hover:bg-[rgba(239,68,68,0.08)] text-left"
+                      style={{ color: "#ef4444", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}
+                    >
+                      <LogOut size={14} />
+                      Log out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="hidden lg:flex font-sans text-[0.7875rem] font-semibold uppercase tracking-[0.2em] transition-colors"
+              style={isTransparent ? { color: "#fff" } : { color: "var(--text-primary)" }}
+            >
+              Login
+            </Link>
+          )}
 
           {/* Theme toggle — left of mobile menu */}
           <div
@@ -267,6 +367,37 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              {user ? (
+                <>
+                  <Link
+                    href={profile?.role === "admin" ? "/admin/dashboard" : "/portal/dashboard"}
+                    onClick={() => setMobileOpen(false)}
+                    className="px-4 py-3 font-sans text-[0.7875rem] font-semibold uppercase tracking-wider flex items-center gap-2"
+                    style={{ color: "var(--gold-primary)" }}
+                  >
+                    <User size={14} />
+                    {profile?.role === "admin" ? "Admin Dashboard" : "Member Portal"}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => { handleLogout(); setMobileOpen(false); }}
+                    className="w-full px-4 py-3 font-sans text-[0.7875rem] font-semibold uppercase tracking-wider text-left flex items-center gap-2"
+                    style={{ color: "#ef4444" }}
+                  >
+                    <LogOut size={14} />
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="px-4 py-3 font-sans text-[0.7875rem] font-semibold uppercase tracking-wider"
+                  style={{ color: "var(--gold-primary)" }}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         )}

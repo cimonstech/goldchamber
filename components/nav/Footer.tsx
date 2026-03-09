@@ -13,6 +13,7 @@ const footerLinks = {
   ],
   legal: [
     { href: "/faqs", label: "FAQs" },
+    { href: "/auth/login", label: "Login" },
     { href: "/gallery", label: "Gallery" },
   ],
 };

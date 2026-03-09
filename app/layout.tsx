@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/nav/Navbar";
-import { Footer } from "@/components/nav/Footer";
-import { ParticleBackgroundWrapper } from "@/components/ParticleBackgroundWrapper";
-import { GoldPriceBar } from "@/components/GoldPriceBar";
+import { LayoutWrapper } from "@/components/LayoutWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const cormorant = Cormorant_Garamond({
@@ -67,15 +64,7 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
-          <ParticleBackgroundWrapper />
-          <div className="sticky top-0 z-50">
-            <div className="hidden md:block">
-              <GoldPriceBar />
-            </div>
-            <Navbar />
-          </div>
-          <main className="relative z-10">{children}</main>
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>
