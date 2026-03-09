@@ -53,9 +53,10 @@ For membership invitations to work, add these URLs in Supabase:
 2. Under **Redirect URLs**, add:
    - `https://yourdomain.com/auth/callback`
    - `https://yourdomain.com/auth/set-password`
-   - For local dev: `http://localhost:3000/auth/callback` and `http://localhost:3000/auth/set-password`
+   - `https://yourdomain.com/auth/reset-password`
+   - For local dev: `http://localhost:3000/auth/callback`, `http://localhost:3000/auth/set-password`, `http://localhost:3000/auth/reset-password`
 
-The invite link redirects to `/auth/callback`, which exchanges the auth code for a session and redirects to `/auth/set-password` where the user creates their password.
+Both invite and password reset links redirect to `/auth/callback`, which exchanges the auth code for a session and redirects to the target page (set-password or reset-password).
 
 ## Local development (Supabase CLI)
 

@@ -22,10 +22,12 @@ export default function ForgotPasswordPage() {
 
     try {
       const supabase = createClient();
-      const redirectUrl =
+      const baseUrl =
         typeof window !== "undefined"
-          ? `${window.location.origin}/auth/reset-password`
-          : `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://chamberofgoldbuyers.com"}/auth/reset-password`;
+          ? window.location.origin
+          : process.env.NEXT_PUBLIC_SITE_URL ?? "https://chamberofgoldbuyers.com";
+      // Route through callback to establish session (same as invite flow)
+      const redirectUrl = `${baseUrl}/auth/callback?next=/auth/reset-password`;
 
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email.trim(), {
         redirectTo: redirectUrl,
