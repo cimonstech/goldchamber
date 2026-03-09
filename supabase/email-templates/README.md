@@ -1,6 +1,6 @@
 # Supabase Email Templates
 
-These HTML templates are for **Supabase Auth** email verification and password reset. Copy them into your Supabase project.
+These HTML templates are for **Supabase Auth** email verification, password reset, and membership invitations. Copy them into your Supabase project.
 
 ## Where to add them
 
@@ -14,6 +14,7 @@ These HTML templates are for **Supabase Auth** email verification and password r
 |----------|---------------|-----|
 | `confirmation.html` | **Confirm signup** | Email verification after signup |
 | `recovery.html` | **Reset password** | Password reset link |
+| `invite.html` | **Invite user** | Membership approval invitation (create password) |
 
 ## Subject lines (suggested)
 
@@ -21,6 +22,7 @@ Copy these into the **Subject** field in Supabase:
 
 - **Confirm signup:** `Confirm your email — Chamber of Licensed Gold Buyers`
 - **Reset password:** `Reset your password — Chamber of Licensed Gold Buyers`
+- **Invite user:** `You're invited — Chamber of Licensed Gold Buyers`
 
 ## Template variables
 
@@ -43,6 +45,18 @@ The templates use `{{ .SiteURL }}/primarylogo-white.png` for the logo. Ensure:
 
 For local dev, email links may not load images if the logo is only on localhost. In production, the logo will load from your domain.
 
+## Redirect URLs (required for invite flow)
+
+For membership invitations to work, add these URLs in Supabase:
+
+1. Go to **Authentication** → **URL Configuration**
+2. Under **Redirect URLs**, add:
+   - `https://yourdomain.com/auth/callback`
+   - `https://yourdomain.com/auth/set-password`
+   - For local dev: `http://localhost:3000/auth/callback` and `http://localhost:3000/auth/set-password`
+
+The invite link redirects to `/auth/callback`, which exchanges the auth code for a session and redirects to `/auth/set-password` where the user creates their password.
+
 ## Local development (Supabase CLI)
 
 If using Supabase locally, add to `config.toml`:
@@ -55,4 +69,8 @@ content_path = "./supabase/email-templates/confirmation.html"
 [auth.email.template.recovery]
 subject = "Reset your password — Chamber of Licensed Gold Buyers"
 content_path = "./supabase/email-templates/recovery.html"
+
+[auth.email.template.invite]
+subject = "You're invited — Chamber of Licensed Gold Buyers"
+content_path = "./supabase/email-templates/invite.html"
 ```

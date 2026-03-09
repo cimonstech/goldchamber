@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're invited — Chamber of Licensed Gold Buyers</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #050505; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #050505; min-height: 100vh;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 520px;">
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding-bottom: 32px;">
+              <img src="{{ .SiteURL }}/primarylogo-white.png" alt="Chamber of Licensed Gold Buyers" width="140" height="40" style="display: block;" />
+            </td>
+          </tr>
+          <!-- Card -->
+          <tr>
+            <td style="background-color: rgba(201, 168, 76, 0.04); border: 1px solid rgba(201, 168, 76, 0.2); border-radius: 4px; padding: 48px 40px;">
+              <h1 style="margin: 0 0 16px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: 300; color: #FAF6EE; text-align: center;">
+                Welcome to CLGB
+              </h1>
+              <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: rgba(250, 246, 238, 0.75); text-align: center;">
+                {{ if .Data.full_name }}Dear {{ .Data.full_name }},{{ else }}Hello,{{ end }}
+              </p>
+              <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: rgba(250, 246, 238, 0.75); text-align: center;">
+                Your membership application has been approved by the Chamber of Licensed Gold Buyers. You are now invited to join our member portal and access exclusive resources, regulatory updates, and industry insights.
+              </p>
+              <p style="margin: 0 0 32px 0; font-size: 14px; line-height: 1.6; color: rgba(250, 246, 238, 0.75); text-align: center;">
+                Click the button below to create your password and activate your account. This link will expire in 24 hours.
+              </p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <a href="{{ .ConfirmationURL }}" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #C9A84C, #8B6914); color: #050505; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; border-radius: 2px;">
+                      Accept invitation & create password
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 32px 0 0 0; font-size: 12px; line-height: 1.6; color: rgba(250, 246, 238, 0.5); text-align: center;">
+                If you didn&apos;t apply for membership, you can safely ignore this email.
+              </p>
+              <p style="margin: 24px 0 0 0; font-size: 11px; color: rgba(250, 246, 238, 0.4); text-align: center;">
+                Chamber of Licensed Gold Buyers — Ghana&apos;s premier association for certified gold trading professionals
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

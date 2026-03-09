@@ -44,10 +44,11 @@ export async function POST(req: NextRequest) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://goldchamber.vercel.app";
 
   // Create the Supabase auth user and send invite email (password setup link)
+  // redirectTo must be in Supabase: Authentication → URL Configuration → Redirect URLs
   const { data: newUser, error: userError } = await supabaseAdmin.auth.admin.inviteUserByEmail(
     application.email,
     {
-      redirectTo: `${siteUrl}/auth/set-password`,
+      redirectTo: `${siteUrl}/auth/callback?next=/auth/set-password`,
       data: {
         full_name: application.full_name,
         role: "member",

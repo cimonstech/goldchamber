@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, CheckCircle, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -19,6 +19,7 @@ function meetsRequirements(password: string): { length: boolean; upper: boolean;
 
 export default function SetPasswordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [tokenValid, setTokenValid] = useState<boolean | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,9 +34,9 @@ export default function SetPasswordPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    const hasHash = typeof window !== "undefined" && !!window.location.hash;
+    const authError = searchParams.get("error") === "auth_failed";
 
-    if (!hasHash) {
+    if (authError) {
       setTokenValid(false);
       return;
     }
@@ -49,28 +50,28 @@ export default function SetPasswordPage() {
     };
 
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY" || (event === "INITIAL_SESSION" && session)) {
+      if (session && (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN" || event === "INITIAL_SESSION")) {
         resolve(true);
       }
     });
 
-    // Check immediately — hash may already be processed
+    // Check immediately — session may already be in cookies (from auth callback)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) resolve(true);
     });
 
-    // Timeout: if no valid session after 3s, link may be expired
+    // Timeout: if no valid session after 4s, link may be expired
     const timer = setTimeout(() => {
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (!session && !resolved) resolve(false);
       });
-    }, 3000);
+    }, 4000);
 
     return () => {
       authListener.subscription.unsubscribe();
       clearTimeout(timer);
     };
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
